@@ -1,15 +1,18 @@
+import 'package:flutter/material.dart';
+
 class APIError {
+  @protected
   APIError();
 
-  factory APIError.HTTPError(int code, String? message) = APIResponse;
+  factory APIError.HTTPError(int code, String? message) = APIHTTPError;
   factory APIError.MappingError() = APIMappingError;
 }
 
-class APIResponse extends APIError {
+class APIHTTPError extends APIError {
   int code;
   String? message;
 
-  APIResponse(this.code, this.message);
+  APIHTTPError(this.code, this.message);
 }
 
 class APIMappingError extends APIError {
