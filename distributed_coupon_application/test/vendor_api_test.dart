@@ -10,23 +10,6 @@ import 'package:result_type/result_type.dart';
 VendorAPI api = VendorAPI();
 
 void main() async {
-  // test("Given a valid coupon id, when a coupon request is performed, then the coupon object is returned", () async {
-  //   const couponId = 1;
-
-  //   Result<Coupon, APIError> coupon = await api.getCoupon(couponId);
-
-  //   expect(coupon.isSuccess, true);
-  //   expect(coupon.success.runtimeType, Coupon);
-  // });
-
-  // test("Given an invalid coupon id, when a coupon request is performed, then a 404 is returned", () async {
-  //   const couponId = -1;
-
-  //   Result<Coupon, APIError> coupon = await api.getCoupon(couponId);
-
-  //   expect(coupon.isFailure, true);
-  //   expect((coupon.failure as APIHTTPError).code, 404);
-  // });
 
   test("Given an empty state, when an API call to list vendors is performed, then the list is returned", () async {
     Result<List<Vendor>, APIError> vendors = await api.getVendors();
