@@ -1,10 +1,9 @@
 import 'dart:ffi';
 
+import 'package:distributed_coupon_application/model/api_error.dart';
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/service/http_service.dart';
 import 'package:result_type/result_type.dart';
-
-import '../model/api_response.dart';
 
 class CouponAPI extends HttpService {
   @override
@@ -39,7 +38,7 @@ class CouponAPI extends HttpService {
 
         return c;
       }) as T;
-    } else if (T.runtimeType == Bool) {
+    } else if (T.runtimeType == bool) {
       // at this point, it's assumed to be working (HTTP code = 2xx)
       return true as T;
     }
@@ -47,23 +46,23 @@ class CouponAPI extends HttpService {
     return null;
   }
 
-  Future<Result<Coupon, APIResponse>> getCoupon(int id) {
+  Future<Result<Coupon, APIError>> getCoupon(int id) {
     return get<Coupon>("/coupons", {"id": id});
   }
 
-  Future<Result<List<Coupon>, APIResponse>> getAllCoupons() {
+  Future<Result<List<Coupon>, APIError>> getAllCoupons() {
     return get<List<Coupon>>("/coupons");
   }
 
-  Future<Result<List<Coupon>, APIResponse>> getCouponsCountry(String country) {
+  Future<Result<List<Coupon>, APIError>> getCouponsCountry(String country) {
     return get<List<Coupon>>("/coupons", {"country": country});
   }
 
-  Future<Result<List<Coupon>, APIResponse>> getCouponsCountryCity(String country, String city) {
+  Future<Result<List<Coupon>, APIError>> getCouponsCountryCity(String country, String city) {
     return get<List<Coupon>>("/coupons", {"country": country, "city": city});
   }
 
-  Future<Result<Bool, APIResponse>> postCoupon(Coupon coupon) {
+  Future<Result<Bool, APIError>> postCoupon(Coupon coupon) {
     return post<Bool>(
       "/coupons",
       {
@@ -77,16 +76,18 @@ class CouponAPI extends HttpService {
       );
   }
 
-  Future< verifyCoupon(Coupon coupon) {
-
+  Future<Result<bool, APIError>> verifyCoupon(Coupon coupon) async {
+    Result<Coupon, APIError> result = await getCoupon(coupon.id);
+    return result.map((success) => true);
   }
+  
 
-  bool deleteCoupon(Coupon coupon) {
+  // Future<Result<bool, APIError>> deleteCoupon(Coupon coupon) {
+    
+  // }
 
-  }
+  // bool redeemCoupon(Coupon coupon) {
 
-  bool redeemCoupon(Coupon coupon) {
-
-  }
+  // }
 
 }
