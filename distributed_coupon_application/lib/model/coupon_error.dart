@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CouponError {
+class RequestError {
   @protected
-  CouponError();
+  RequestError();
 
-  factory CouponError.InvalidRequest() = InvalidRequest;
+  factory RequestError.InvalidRequest() = InvalidRequest;
+  factory RequestError.DoesNotExist() = DoesNotExist;
 }
 
-class InvalidRequest extends CouponError {
+class InvalidRequest extends RequestError {
+}
+
+class DoesNotExist extends RequestError {
 
 }

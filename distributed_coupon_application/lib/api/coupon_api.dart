@@ -5,10 +5,11 @@ import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/service/http_service.dart';
 import 'package:result_type/result_type.dart';
 
+// note: not usable yet. /coupons endpoint not done
 class CouponAPI extends HttpService {
   @override
   String baseUrl() {
-    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev";
+    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons";
   }
   
   @override
@@ -37,7 +38,7 @@ class CouponAPI extends HttpService {
         c.isMultiuse = map["isMultiuse"];
 
         return c;
-      }) as T;
+      }).toList(growable: false) as T;
     } else if (T.runtimeType == bool) {
       // at this point, it's assumed to be working (HTTP code = 2xx)
       return true as T;
@@ -47,24 +48,24 @@ class CouponAPI extends HttpService {
   }
 
   Future<Result<Coupon, APIError>> getCoupon(int id) {
-    return get<Coupon>("/coupons", {"id": id});
+    return get<Coupon>("/", {"id": id});
   }
 
   Future<Result<List<Coupon>, APIError>> getAllCoupons() {
-    return get<List<Coupon>>("/coupons");
+    return get<List<Coupon>>("/");
   }
 
   Future<Result<List<Coupon>, APIError>> getCouponsCountry(String country) {
-    return get<List<Coupon>>("/coupons", {"country": country});
+    return get<List<Coupon>>("/", {"country": country});
   }
 
   Future<Result<List<Coupon>, APIError>> getCouponsCountryCity(String country, String city) {
-    return get<List<Coupon>>("/coupons", {"country": country, "city": city});
+    return get<List<Coupon>>("/", {"country": country, "city": city});
   }
 
   Future<Result<Bool, APIError>> postCoupon(Coupon coupon) {
     return post<Bool>(
-      "/coupons",
+      "/",
       {
         "vendorID": coupon.vendorID,
         "expiryDate": coupon.expiryDate,

@@ -8,20 +8,20 @@ import 'package:result_type/result_type.dart';
 class CouponDAL {
   CouponAPI api = CouponAPI();
 
-  CouponError mapApiError(APIError error) {
+  RequestError mapApiError(APIError error) {
     if (error is APIHTTPError) {
-      return CouponError.InvalidRequest();
+      return RequestError.InvalidRequest();
     } else {
       print("Unhandled");
-      return CouponError.InvalidRequest();
+      return RequestError.InvalidRequest();
     }
   }
 
-  Future<Result<Coupon, CouponError>> getCoupon(int id) async {
+  Future<Result<Coupon, RequestError>> getCoupon(int id) async {
     return (await api.getCoupon(id)).mapError(mapApiError);
   }
 
-  Future<Result<Coupon, CouponError>>getAllCoupons() async {
+  Future<Result<Coupon, RequestError>>getAllCoupons() async {
     return (await api.getAllCoupons()).mapError(mapApiError);
   }
 
