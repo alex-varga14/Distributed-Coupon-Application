@@ -23,15 +23,21 @@ class VendorDAL {
     return (await api.getVendorById(id)).mapError(mapApiError);
   }
 
-  Future<Result<Vendor, RequestError>>getAllVendors() async {
-    return (await api.getVendors()).mapError(mapApiError);
+  Future<Result<List<Vendor>, RequestError>>getAllVendors() async {
+    // return (await api.getVendors()).mapError(mapApiError);
+
+    // mock data
+    return Future.value(Success([
+      Vendor.create(id: 1, country: "Canada", city: "Calgary", vendorName: "MountainSoapsCO"),
+      Vendor.create(id: 2, country: "Canada", city: "Calgary", vendorName: "AmericanTire")
+    ]));
   }
 
-  Future<Result<Vendor, RequestError>>getVendorsByCountry(String country) async {
+  Future<Result<List<Vendor>, RequestError>>getVendorsByCountry(String country) async {
     return (await api.getVendorsByCountry(country)).mapError(mapApiError);
   }
 
-  Future<Result<Vendor, RequestError>>getVendorsByCountryCity(String country, String city) async {
+  Future<Result<List<Vendor>, RequestError>>getVendorsByCountryCity(String country, String city) async {
     return (await api.getVendorsByCountryCity(country, city)).mapError(mapApiError);
   }
 
