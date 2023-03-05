@@ -2,6 +2,7 @@ import 'package:distributed_coupon_application/vm/createcouponpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:result_type/result_type.dart';
 
 import '../model/coupon.dart';
 import '../model/vendor.dart';
@@ -188,17 +189,34 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     //TODO post coupon to database and display some confirmation window
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          _buildPopupDialog(context),
-                    ).then(
-                      (_) {
-                        _openCouponFeedPage();
-                      },
-                    );
+                    Result<bool, String> result = await vm.createCoupon(coupon);
+
+                    if (result.isSuccess && result.success) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            _buildSuccessPopupDialog(context),
+                      ).then(
+                        (_) {
+                          _openCouponFeedPage();
+                        },
+                      );
+                    } else {
+                      String message;
+                      if (result.isSuccess) {
+                        message = "Server rejected request";
+                      } else {
+                        message = result.failure;
+                      }
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            _buildErrorPopupDialog(context, message),
+                      );
+                    }
                   },
                   child: Text(
                     'CREATE',
@@ -217,7 +235,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
     );
   }
 
-  Widget _buildPopupDialog(BuildContext context) {
+  Widget _buildSuccessPopupDialog(BuildContext context) {
     return AlertDialog(
       title: const Text('Coupon created'),
       content: Column(
@@ -231,7 +249,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
       actions: <Widget>[
         TextButton(
           onPressed: () async {
-            bool result = await vm.createCoupon(coupon);
             Navigator.of(context).pop();
           },
           child: const Text('Close'),
@@ -239,6 +256,28 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
       ],
     );
   }
+
+  Widget _buildErrorPopupDialog(BuildContext context, String message) {
+    return AlertDialog(
+      title: const Text('Error'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(message),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+
 
   void _showDateTimePicker() {
     DatePicker.showDateTimePicker(context,
@@ -264,11 +303,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
   }
 
   void _openCouponFeedPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CouponFeedPage(),
-      ),
-    );
+    Navigator.pop(context);
   }
 }

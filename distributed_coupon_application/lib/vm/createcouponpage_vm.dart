@@ -7,14 +7,15 @@ import '../model/coupon_error.dart';
 class CreateCouponPageVM {
   CouponDAL dal = CouponDAL();
 
-  Future<bool> createCoupon(Coupon coupon) async {
+  Future<Result<bool, String>> createCoupon(Coupon coupon) async {
     Result<bool, RequestError> result = await dal.createCoupon(coupon);
 
-    if (result.isSuccess) {
-      return result.success;
-    }
+    return result.mapError((error) {
+      if (error is RequestErrorInvalidRequest) {
+        return "Unable to send a request to the server. This is an internal error.";
+      }
 
-    // TODO: handle error
-    return false;
+      return "Unknown error. Please inform the developers of the issue.";
+    });
   }
 }
