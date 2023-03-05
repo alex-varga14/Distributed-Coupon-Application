@@ -80,7 +80,7 @@ class VendorAPI extends HttpService {
   }
 
   Future<Result<Bool, APIError>> postVendor(Vendor vendor) {
-    return post<Bool>(
+    return postJson<Bool>(
       "/",
       {
         "id": vendor.id,

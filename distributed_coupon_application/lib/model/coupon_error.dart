@@ -4,13 +4,13 @@ class RequestError {
   @protected
   RequestError();
 
-  factory RequestError.InvalidRequest() = InvalidRequest;
-  factory RequestError.DoesNotExist() = DoesNotExist;
+  factory RequestError.InvalidRequest() = RequestErrorInvalidRequest;
+  factory RequestError.DoesNotExist() = RequestErrorDoesNotExist;
 }
 
-class InvalidRequest extends RequestError {
+class RequestErrorInvalidRequest extends RequestError {
 }
 
-class DoesNotExist extends RequestError {
+class RequestErrorDoesNotExist extends RequestError {
 
 }
