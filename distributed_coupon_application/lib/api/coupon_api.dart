@@ -63,12 +63,12 @@ class CouponAPI extends HttpService {
     return get<List<Coupon>>("/", {"country": country, "city": city});
   }
 
-  Future<Result<Bool, APIError>> postCoupon(Coupon coupon) {
-    return post<Bool>(
+  Future<Result<bool, APIError>> postCoupon(Coupon coupon) {
+    return postJson<bool>(
       "/",
       {
         "vendorID": coupon.vendorID,
-        "expiryDate": coupon.expiryDate,
+        "expiryDate": coupon.expiryDate.toString(),
         "title": coupon.title,
         "description": coupon.description,
         "name": "what is the name?", // TODO

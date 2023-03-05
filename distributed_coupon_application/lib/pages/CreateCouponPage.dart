@@ -1,3 +1,4 @@
+import 'package:distributed_coupon_application/vm/createcouponpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,8 @@ class CreateCouponPage extends StatefulWidget {
 class _CreateCouponPageState extends State<CreateCouponPage> {
   Vendor vendor = Vendor();
   Coupon coupon = Coupon();
+  
+  CreateCouponPageVM vm = CreateCouponPageVM();
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +230,8 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () {
+          onPressed: () async {
+            bool result = await vm.createCoupon(coupon);
             Navigator.of(context).pop();
           },
           child: const Text('Close'),

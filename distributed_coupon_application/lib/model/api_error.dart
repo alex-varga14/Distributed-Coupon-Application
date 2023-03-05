@@ -13,6 +13,11 @@ class APIHTTPError extends APIError {
   String? message;
 
   APIHTTPError(this.code, [this.message]);
+
+  @override
+  String toString() {
+    return "APIHTTPError $code: $message";
+  }
 }
 
 class APIMappingError extends APIError {

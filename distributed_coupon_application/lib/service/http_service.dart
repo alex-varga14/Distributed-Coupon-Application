@@ -9,8 +9,8 @@ abstract class HttpService {
   String baseUrl();
   T? deserialize<T>(dynamic data);
 
-  Future<Result<T, APIError>> post<T>(String endpoint, [Map<String, Object>? params]) async {
-    var response = await http.post(Uri.parse(baseUrl() + endpoint), body: params);
+  Future<Result<T, APIError>> postJson<T>(String endpoint, [Map<String, Object>? params]) async {
+    var response = await http.post(Uri.parse(baseUrl() + endpoint), body: jsonEncode(params));
 
     if (response.statusCode < 200 || response.statusCode > 299) {
       return Failure(APIError.HTTPError(response.statusCode, response.reasonPhrase));

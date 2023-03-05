@@ -52,13 +52,6 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
           builder: (BuildContext context, AsyncSnapshot<List<Pair<Coupon, Vendor>>> snapshot) {
             return ListView(
               padding: const EdgeInsets.all(12),
-              // children: [
-              //   //TODO - populate with real coupons from database
-              //   CouponWidget(coupon: coupon, couponVendor: vendor),
-              //   const SizedBox(
-              //     height: 10,
-              //   ),
-              // ],
               children: (snapshot.data ?? [])
                 .map((elem) => [
                     CouponWidget(coupon: elem.first, couponVendor: elem.second),

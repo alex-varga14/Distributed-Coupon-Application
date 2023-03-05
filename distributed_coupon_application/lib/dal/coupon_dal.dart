@@ -32,4 +32,10 @@ class CouponDAL {
     // return (await api.getAllCoupons()).mapError(mapApiError);
   }
 
+  Future<Result<bool, RequestError>> createCoupon(Coupon coupon) async {
+    var result = await api.postCoupon(coupon);
+    print(result);
+    return (await api.postCoupon(coupon)).mapError(mapApiError);
+  }
+
 }

@@ -28,13 +28,13 @@ class CouponFeedPageVM {
     Result<List<Vendor>, RequestError> vendorsResult = await vendorDAL.getAllVendors();
 
     if (couponsResult.isFailure || vendorsResult.isFailure) {
-      // TODO: handle
+      // TODO: handle error
       return Future.delayed(const Duration(seconds: 0), () => []);
     }
 
     List<Coupon> coupons = couponsResult.success;
     List<Vendor> vendors = vendorsResult.success;
-    
+
     // left join on coupons
     return coupons.map((c) => Pair(c, vendors.firstWhere((v) => c.vendorID == v.id))).toList();
   }
