@@ -19,5 +19,11 @@ from backendcore import views
 
 urlpatterns = [
     path('placeholder/', views.PlaceholderAPIView.as_view()),
+
+    # https://www.django-rest-framework.org/api-guide/filtering/
+    path('placeholder1/<str:query>/', views.Placeholder1APIView.as_view()),
+
+
+    path('coupons/', views.CouponAPIView.as_view()),
     path('admin/', admin.site.urls),
 ]
