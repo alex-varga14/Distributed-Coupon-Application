@@ -20,6 +20,7 @@ class GRPCClient:
 
                 with(grpc.insecure_channel(host) as channel):
                     try:
+                        print(f"Performing RPC on {host}")
                         grpc.channel_ready_future(channel).result(timeout=2) # seconds
                         stub = service_pb2_grpc.RemoteServiceStub(channel)
                         func(stub)
