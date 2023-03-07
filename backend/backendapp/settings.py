@@ -27,11 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
+SERVER_PORT = 8000
 
 INSTALLED_APPS = [
     'rest_framework',
+    'django_grpc_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
