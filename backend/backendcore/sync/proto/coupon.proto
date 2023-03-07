@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package remote;
+
+message Coupon {
+    int32 id = 1;
+    int32 vendorID = 2;
+    string expiryDate = 3;
+    string title = 4;
+    string description = 5;
+    int32 quantity = 6;
+    bool isMultiuse = 7;
+}
+

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package remote;
+
+import "vendor.proto";
+import "coupon.proto";
+import "google/protobuf/empty.proto";
+
+service RemoteService {
+    rpc CreateCoupon(Coupon) returns (Coupon) {}
+    rpc CreateVendor(Vendor) returns (Vendor) {}
+    rpc DestroyCoupon(Coupon) returns (google.protobuf.Empty) {}
+    rpc DestroyVendor(Vendor) returns (google.protobuf.Empty) {}
+}
+
