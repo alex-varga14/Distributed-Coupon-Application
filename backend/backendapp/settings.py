@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SERVER_PORT = 8000
+# Application definition
 
 INSTALLED_APPS = [
     'rest_framework',
