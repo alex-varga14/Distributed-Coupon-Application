@@ -6,14 +6,19 @@ from rest_framework.views import APIView
 
 from backendcore import models, serializers
 
+from backendcore.sync import syncclient
+
 # Create your views here.
 
 # https://www.django-rest-framework.org/tutorial/quickstart/
 class PlaceholderAPIView(APIView):
 
+
     # GET /placeholder/?param1={},param2={}
     # param 1 is required, param 2 is optional
     def get(self, request, *args, **kwargs):
+        syncclient.createCoupon()
+
         param1 = request.query_params.get("param1")
         param2 = request.query_params.get("param2", "default_val")
 
@@ -22,6 +27,7 @@ class PlaceholderAPIView(APIView):
 
         model = models.PlaceholderModel(f"param1 is {param1}, param2 is {param2}", 123)
         serializer = serializers.PlaceholderSerializer(model)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

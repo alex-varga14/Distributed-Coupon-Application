@@ -1,6 +1,5 @@
 from django.apps import AppConfig
-from backendcore.sync import grpc_server
-
+from backendcore.sync import syncserver
 
 class BackendcoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -8,6 +7,6 @@ class BackendcoreConfig(AppConfig):
 
     # called once
     def ready(self):
-        grpc_server.serve()
+        syncserver.serve()
 
 

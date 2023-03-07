@@ -1,12 +1,37 @@
-from backendcore.sync.proto import coupon_pb2_grpc, vendor_pb2_grpc, service_pb2_grpc
+from backendcore.sync.proto import coupon_pb2_grpc, coupon_pb2
+from backendcore.sync.proto import vendor_pb2_grpc, vendor_pb2
+from backendcore.sync.proto import service_pb2_grpc
+
 import grpc
 from concurrent import futures
 import socket, errno
 from random import randrange
 
+from backendcore.sync import syncserver
+import threading
+
+port = 0
+
 class GRPCServer(service_pb2_grpc.RemoteService):
+    """
+    All methods here will be invoked via RPC by the leader replica.
+    """
+
+    def __init__(self, syncServer):
+        self.syncServer = syncServer
+
     def CreateCoupon(self, request, context):
-        print("create coupon")
+        self.syncServer.createCoupon()
+        return coupon_pb2.Coupon(
+            id=1,
+            vendorID=12,
+            expiryDate="2022-12-12",
+            title="title test",
+            description="test desc",
+            quantity=5,
+            isMultiuse=False
+        )
+
     
     def CreateVendor(self, request, context):
         print("create vendor")
@@ -27,15 +52,29 @@ def is_port_available(port):
     finally:
         s.close()
 
-def serve():
+def serve(syncServer):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
-    service_pb2_grpc.add_RemoteServiceServicer_to_server(GRPCServer(), server)
-    p = randrange(10000) + 50000 # port 50000-59999
+    service_pb2_grpc.add_RemoteServiceServicer_to_server(GRPCServer(syncServer), server)
+
+    # p = randrange(10000) + 50000 # port 50000-59999
+    # while (not is_port_available(p)):
+    #     p = randrange(10000) + 50000
+
+    p = 50000
     while (not is_port_available(p)):
-        p = randrange(10000) + 50000
+        p += 1
 
-    server.add_insecure_port(f"[::]:{p}")
-    server.start()
+    global port
+    port = p
 
-    print(f"gRPC server started on port {p}")
+    def task():
+        server.add_insecure_port(f"[::]:{p}")
+        server.start()
+        print(f"gRPC server started on port {p}")
+        server.wait_for_termination()
+        print("gRPC server dead")
+
+    th = threading.Thread(target=task, args={}, kwargs={})
+    th.start()
+
 
