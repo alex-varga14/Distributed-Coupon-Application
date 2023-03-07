@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package remote;
+
+message Vendor {
+    int32 id = 1;
+    string country = 2;
+    string city = 3;
+    string vendorName = 4;
+}
+
