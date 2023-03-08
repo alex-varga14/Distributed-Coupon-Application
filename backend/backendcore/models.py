@@ -13,8 +13,12 @@ from django.db import models
 # Create your models here.
 
 # https://www.django-rest-framework.org/api-guide/fields/
+class PlaceholderModel(models.Model):
+    text = models.CharField(max_length=25)
+    number = models.IntegerField()
+    
 class Vendor(models.Model):
-    vendorID = models.IntegerField(primary_key=True)
+    vendorID = models.IntegerField()
     country = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
     vendorName = models.CharField(max_length=20)
@@ -27,7 +31,7 @@ class Vendor(models.Model):
     
 
 class Coupon(models.Model):
-    couponID = models.IntegerField(primary_key=True)
+    couponID = models.IntegerField()
     vendorID = models.IntegerField()
     date = models.DateField()
     title = models.CharField(max_length=50)
@@ -45,5 +49,5 @@ class Coupon(models.Model):
         self.isMultiuse = isMultiuse
 
     def decrement_quantity(self):
-        quantity = quantity - 1
+        self.quantity = self.quantity - 1
 
