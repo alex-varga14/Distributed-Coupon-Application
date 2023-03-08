@@ -17,6 +17,8 @@ class CouponDAL {
     }
   }
 
+  // GET Methods
+
   Future<Result<Coupon, RequestError>> getCoupon(int id) async {
     return (await api.getCoupon(id)).mapError(mapApiError);
   }
@@ -31,6 +33,53 @@ class CouponDAL {
     
     // return (await api.getAllCoupons()).mapError(mapApiError);
   }
+
+  // Get Coupon List by VendorID
+  Future<Result<List<Coupon>, RequestError>>getCouponsByVendorID(int vendorID) async {
+    return (await api.getCouponsByVendorID(vendorID)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by Expiry Date
+  Future<Result<List<Coupon>, RequestError>>getCouponsByExpiryDate(DateTime expiryDate) async {
+    return (await api.getCouponsByExpiryDate(expiryDate)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by Title
+  Future<Result<List<Coupon>, RequestError>>getCouponsByTitle(String title) async {
+    return (await api.getCouponsByTitle(title)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by Multi-Use availability
+  Future<Result<List<Coupon>, RequestError>>getCouponsByMultiUse(bool isMultiuse) async {
+    return (await api.getCouponsByMultiUse(isMultiuse)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by VendorID and ExpiryDate
+  Future<Result<List<Vendor>, RequestError>>getCouponsByVendorIDExpriryDate(int vendorID, DateTime expiryDate) async {
+    return (await api.getCouponsByVendorIDExpriryDate(vendorID, expiryDate)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by VendorID and Coupon Title
+  Future<Result<List<Vendor>, RequestError>>getCouponsByVendorIDTitle(int vendorID, String title) async {
+    return (await api.getCouponsByVendorIDTitle(vendorID, title)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by VendorID and Multi-Use ability
+  Future<Result<List<Vendor>, RequestError>>getCouponsByVendorIDMultiUse(int vendorID, bool isMultiuse) async {
+    return (await api.getCouponsByVendorIDMultiUse(vendorID, isMultiuse)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by Coupon Title and Multi-Use ability
+  Future<Result<List<Vendor>, RequestError>>getCouponsByTitleMultiUse(String title, bool isMultiuse) async {
+    return (await api.getCouponsByTitleMultiUse(title, isMultiuse)).mapError(mapApiError);
+  }
+
+  // Get Coupon List by VendorID, Coupon Title, and Multi Use
+  Future<Result<List<Vendor>, RequestError>>getCouponsByVendorIDTitleMultiuse(int vendorID, String title, bool isMultiuse) async {
+    return (await api.getCouponsByVendorIDTitleMultiuse(vendorID, title, isMultiuse)).mapError(mapApiError);
+  }
+ 
+  // POST methods --- IMCOMPLETE
 
   Future<Result<bool, RequestError>> createCoupon(Coupon coupon) async {
     var result = await api.postCoupon(coupon);

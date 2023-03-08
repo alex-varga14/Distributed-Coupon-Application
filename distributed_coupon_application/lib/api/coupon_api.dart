@@ -55,12 +55,40 @@ class CouponAPI extends HttpService {
     return get<List<Coupon>>("/");
   }
 
-  Future<Result<List<Coupon>, APIError>> getCouponsCountry(String country) {
-    return get<List<Coupon>>("/", {"country": country});
+  Future<Result<List<Coupon>, APIError>> getCouponsByVendorID(int vendorID){
+    return get<Coupon>("/", {"vendorID:" vendorID});
   }
 
-  Future<Result<List<Coupon>, APIError>> getCouponsCountryCity(String country, String city) {
-    return get<List<Coupon>>("/", {"country": country, "city": city});
+  Future<Result<List<Coupon>, APIError>> getCouponsByExpiryDate(DateTime expiryDate){
+    return get<Coupon>("/", {"expiryDate:" expiryDate});
+  }
+
+  Future<Result<List<Coupon>, APIError>> getCouponsByTitle(String title){
+    return get<Coupon>("/", {"title:" title});
+  }
+
+  Future<Result<List<Coupon>, APIError>> getCouponsByMultiUse(bool isMultiuse){
+    return get<Coupon>("/", {"isMultiuse:" isMultiuse});
+  }
+  
+  Future<Result<List<Coupon>, APIError>> getCouponsByVendorIDExpriryDate(int vendorID, DateTime expiryDate) {
+    return get<Coupon>("/", {"vendorID": vendorID, "expiryDate": expiryDate})
+  }
+
+  Future<Result<List<Coupon>, APIError>> getCouponsByVendorIDTitle(int vendorID, String title) {
+    return get<Coupon>("/", {"vendorID": vendorID, "title": title})
+  }
+
+  Future<Result<List<Coupon>, APIError>> getCouponsByVendorIDMultiUse(int vendorID, bool isMultiuse) {
+    return get<Coupon>("/", {"vendorID": vendorID, "isMultiuse": isMultiuse})
+  }
+
+  Future<Result<List<Coupon>, APIError>> getCouponsByTitleMultiUse(String title, bool isMultiuse) {
+    return get<Coupon>("/", {"title": title, "isMultiuse": isMultiuse})
+  }
+
+  Future<Result<List<Coupon>, APIError>> getCouponsByVendorIDTitleMultiuse(int vendorID, String title, bool isMultiuse) {
+    return get<Coupon>("/", {"vendorID": vendorID, "title": title, "isMultiuse": isMultiuse})
   }
 
   Future<Result<bool, APIError>> postCoupon(Coupon coupon) {
@@ -71,7 +99,7 @@ class CouponAPI extends HttpService {
         "expiryDate": coupon.expiryDate.toString(),
         "title": coupon.title,
         "description": coupon.description,
-        "name": "what is the name?", // TODO
+        "name": "what is the name?", // TODO - no model attribute?
         "isMultiuse": coupon.isMultiuse
       }
       );
@@ -81,8 +109,9 @@ class CouponAPI extends HttpService {
     Result<Coupon, APIError> result = await getCoupon(coupon.id);
     return result.map((success) => true);
   }
-  
 
+  // INCOMPLETE BELOW
+  
   // Future<Result<bool, APIError>> deleteCoupon(Coupon coupon) {
     
   // }
@@ -90,5 +119,4 @@ class CouponAPI extends HttpService {
   // bool redeemCoupon(Coupon coupon) {
 
   // }
-
 }
