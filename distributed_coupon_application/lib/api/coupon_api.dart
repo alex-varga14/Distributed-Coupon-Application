@@ -14,8 +14,8 @@ class CouponAPI extends HttpService {
   
   @override
   T? deserialize<T>(dynamic data) {
-    if (T.runtimeType == Coupon) {
-      Map<String, dynamic> map = data as Map<String, dynamic>;
+    if (T == Coupon) {
+      Map<String, dynamic> map = data.first as Map<String, dynamic>;
 
       Coupon c = Coupon();
       c.id = map["id"];
@@ -23,23 +23,24 @@ class CouponAPI extends HttpService {
       c.expiryDate = DateTime.parse(map["expiryDate"]);
       c.title = map["title"];
       c.description = map["description"];
-      c.isMultiuse = map["isMultiuse"];
+      c.isMultiuse = (map["isMultiUse"] == 0) ? false : true;
 
       return c as T;
 
-    } else if (T.runtimeType == List<Coupon>) {
+    } else if (T == List<Coupon>) {
       // each element in the list is a Map<dyanmic, dynamic>
       return (data as List).map((map) {
         Coupon c = Coupon();
+        c.id = map["id"];
         c.vendorID = map["vendorID"];
         c.expiryDate = DateTime.parse(map["expiryDate"]);
         c.title = map["title"];
         c.description = map["description"];
-        c.isMultiuse = map["isMultiuse"];
+        c.isMultiuse = (map["isMultiUse"] == 0) ? false : true;
 
         return c;
       }).toList(growable: false) as T;
-    } else if (T.runtimeType == bool) {
+    } else if (T == bool) {
       // at this point, it's assumed to be working (HTTP code = 2xx)
       return true as T;
     }
@@ -72,7 +73,7 @@ class CouponAPI extends HttpService {
         "title": coupon.title,
         "description": coupon.description,
         "name": "what is the name?", // TODO
-        "isMultiuse": coupon.isMultiuse
+        "isMultiUse": coupon.isMultiuse
       }
       );
   }

@@ -9,18 +9,16 @@ import 'package:result_type/result_type.dart';
 CouponAPI api = CouponAPI();
 
 void main() async {
-  // /coupons not implemented
+  // /coupons not fully implemented
 
+  test("Given a valid coupon id, when a coupon request is performed, then the coupon object is returned", () async {
+     const couponId = 1;
 
-  
-  // test("Given a valid coupon id, when a coupon request is performed, then the coupon object is returned", () async {
-  //   const couponId = 1;
+     Result<Coupon, APIError> coupon = await api.getCoupon(couponId);
 
-  //   Result<Coupon, APIError> coupon = await api.getCoupon(couponId);
-
-  //   expect(coupon.isSuccess, true);
-  //   expect(coupon.success.runtimeType, Coupon);
-  // });
+     expect(coupon.isSuccess, true);
+     expect(coupon.success.runtimeType, Coupon);
+   });
 
   // test("Given an invalid coupon id, when a coupon request is performed, then a 404 is returned", () async {
   //   const couponId = -1;
@@ -31,11 +29,11 @@ void main() async {
   //   expect((coupon.failure as APIHTTPError).code, 404);
   // });
 
-  // test("Given an empty state, when an API to retrieve all coupons is performed, then the list is returned", () async {
-  //   Result<List<Coupon>, APIError> coupons = await api.getAllCoupons();
+   test("Given an empty state, when an API to retrieve all coupons is performed, then the list is returned", () async {
+     Result<List<Coupon>, APIError> coupons = await api.getAllCoupons();
     
-  //   expect(coupons.isSuccess, true);
-  //   expect(coupons.success.runtimeType, List<Coupon>);
-  // });
+     expect(coupons.isSuccess, true);
+     expect(coupons.success.runtimeType, List<Coupon>);
+   });
 
 }
