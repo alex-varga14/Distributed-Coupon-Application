@@ -24,6 +24,7 @@ urlpatterns = [
     path('placeholder1/<str:query>/', views.Placeholder1APIView.as_view()),
 
 
-    path('coupons/', views.CouponAPIView.as_view()),
+    path('coupons/', views.CouponsAPIView.as_view()),
+    path('vendors/', views.VendorsAPIView.as_view()),
     path('admin/', admin.site.urls),
 ]

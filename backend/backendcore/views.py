@@ -49,7 +49,7 @@ class Placeholder1APIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CouponAPIView(APIView):
+class CouponsAPIView(APIView):
 
     # GET /coupons
     def get(self, request, *args, **kwargs):
@@ -61,6 +61,9 @@ class CouponAPIView(APIView):
         name = request.query_params.get("name")
         isMultiuse = request.query_params.get("isMultiuse")
 
+        # DAL call here, then return data model
+
+        # temp code (can be reused)
         model = models.Coupon(123, 456, "2022-12-22", "title", "desc", 5, False)
         syncclient.createCoupon(model)
         serializer = serializers.CouponSerializer(model)
@@ -79,9 +82,49 @@ class CouponAPIView(APIView):
 
         # DAL call here, then return data model
 
-        model = models.Coupon(123, 456, "2022-12-22", "title", "desc", 5, False)
+        # temp code (can be reused)
+        model = models
         serializer = serializers.CouponSerializer(model)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class VendorsAPIView(APIView):
+
+    # GET /vendors
+    def get(self, request, *args, **kwargs):
+        couponID = request.query_params.get("id") # TODO: what is this for?
+        vendorID = request.query_params.get("vendorID")
+        title = request.query_params.get("title") # TODO: what is this for?
+        country = request.query_params.get("country")
+        city = request.query_params.get("city")
+        name = request.query_params.get("name")
+
+        # DAL call here, then return data model
+
+        # temp code (can be reused)
+        model = models.Vendor(vendorID, country, city, name)
+        syncclient.createVendor(model)
+        serializer = serializers.VendorSerializer(model)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # POST /vendors
+    def post(self, request, *args, **kwargs):
+        couponID = request.query_params.get("id") # TODO: what is this for?
+        vendorID = request.query_params.get("vendorID")
+        title = request.query_params.get("title") # TODO: what is this for?
+        country = request.query_params.get("country")
+        city = request.query_params.get("city")
+        name = request.query_params.get("name")
+
+        # DAL call here, then return data model
+
+        # temp code (can be reused)
+        model = models.Vendor(vendorID, country, city, name)
+        serializer = serializers.VendorSerializer(model)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 

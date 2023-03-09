@@ -13,8 +13,8 @@ grpcClient = grpc_client.GRPCClient(
 # This should ONLY be invoked by the DAL.
 
 
-def createVendor():
-    pass
+def createVendor(vendor):
+    grpcClient.CreateVendor(vendor)
 
 def createCoupon(coupon):
     grpcClient.CreateCoupon(coupon)

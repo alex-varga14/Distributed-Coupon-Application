@@ -44,7 +44,10 @@ class GRPCServer(service_pb2_grpc.RemoteService):
 
     
     def CreateVendor(self, request, context):
-        print("create vendor")
+        # request is vendor_pb2.Vendor
+        model = grpc_helper.from_grpc_model(request)
+        self.syncServer.createVendor(model)
+        return grpc_helper.from_backend_model(model)
 
     def DestroyCoupon(self, request, context):
         print("destroy coupon")

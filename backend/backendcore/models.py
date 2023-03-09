@@ -29,14 +29,14 @@ class Vendor(models.Model):
     vendorName = models.CharField(max_length=20)
 
     def __init__(self, vendorID, country, city, vendorName):
-        self.id = id
+        self.id = vendorID
         self.country = country
         self.city = city
         self.vendorName = vendorName
     
 
 class Coupon(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True) # TODO: id is bad name
     vendorID = models.IntegerField()
     expiryDate = models.CharField(max_length=25)
     title = models.CharField(max_length=50)

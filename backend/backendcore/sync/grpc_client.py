@@ -37,8 +37,10 @@ class GRPCClient:
             grpc_helper.from_backend_model(coupon)
         ))
 
-    def CreateVendor(self):
-        print("create vendor")
+    def CreateVendor(self, vendor):
+        self.execute(lambda stub: stub.CreateVendor(
+            grpc_helper.from_backend_model(vendor)
+        ))
 
     def DestroyCoupon(self):
         print("destroy coupon")
