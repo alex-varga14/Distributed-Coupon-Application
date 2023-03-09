@@ -34,7 +34,7 @@ class VendorAPI extends HttpService {
       v.id = map["id"];
       v.country = map["country"];
       v.city = map["city"];
-      v.vendorName = map["name"];
+      v.vendorName = map["vendorName"];
 
       return v as T;
 
@@ -45,7 +45,7 @@ class VendorAPI extends HttpService {
         v.id = map["id"];
         v.country = map["country"];
         v.city = map["city"];
-        v.vendorName = map["name"];
+        v.vendorName = map["vendorName"];
 
         return v;
       }).toList(growable: false) as T;
@@ -86,7 +86,7 @@ class VendorAPI extends HttpService {
         "id": vendor.id,
         "country": vendor.country,
         "city": vendor.city,
-        "name": vendor.vendorName
+        "vendorName": vendor.vendorName
       }
       );
   }
