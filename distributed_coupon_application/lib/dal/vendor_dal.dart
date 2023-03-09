@@ -1,6 +1,6 @@
 import 'package:distributed_coupon_application/api/vendor_api.dart';
 import 'package:distributed_coupon_application/model/api_error.dart';
-import 'package:distributed_coupon_application/model/coupon_error.dart';
+import 'package:distributed_coupon_application/model/RequestError.dart';
 import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:result_type/result_type.dart';
 
@@ -11,6 +11,8 @@ class VendorDAL {
     if (error is APIHTTPError) {
       if (error.code == 404) {
         return RequestError.DoesNotExist();
+      } else if (error.code == 501) {
+        return RequestError.NotYetImplemented();
       }
       return RequestError.InvalidRequest();
     } else {
@@ -23,7 +25,7 @@ class VendorDAL {
     return (await api.getVendorById(id)).mapError(mapApiError);
   }
 
-  Future<Result<List<Vendor>, RequestError>>getAllVendors() async {
+  Future<Result<List<Vendor>, RequestError>> getAllVendors() async {
     return (await api.getVendors()).mapError(mapApiError);
 
     // mock data
@@ -33,12 +35,20 @@ class VendorDAL {
     ]));*/
   }
 
-  Future<Result<List<Vendor>, RequestError>>getVendorsByCountry(String country) async {
+  Future<Result<List<Vendor>, RequestError>> getVendorsByCountry(
+      String country) async {
     return (await api.getVendorsByCountry(country)).mapError(mapApiError);
   }
 
-  Future<Result<List<Vendor>, RequestError>>getVendorsByCountryCity(String country, String city) async {
-    return (await api.getVendorsByCountryCity(country, city)).mapError(mapApiError);
+  Future<Result<List<Vendor>, RequestError>> getVendorsByCountryCity(
+      String country, String city) async {
+    return (await api.getVendorsByCountryCity(country, city))
+        .mapError(mapApiError);
   }
 
+  Future<Result<bool, RequestError>> createVendor(Vendor vendor) async {
+    //var result = await api.postVendor(vendor);
+    //print(result);
+    return (await api.postVendor(vendor)).mapError(mapApiError);
+  }
 }

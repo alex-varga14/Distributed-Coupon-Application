@@ -1,3 +1,4 @@
+import 'package:distributed_coupon_application/pages/VendorRegisterPage.dart';
 import 'package:distributed_coupon_application/vm/createcouponpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -6,7 +7,6 @@ import 'package:result_type/result_type.dart';
 
 import '../model/coupon.dart';
 import '../model/vendor.dart';
-import 'CouponFeedPage.dart';
 
 class CreateCouponPage extends StatefulWidget {
   const CreateCouponPage({Key? key}) : super(key: key);
@@ -18,8 +18,10 @@ class CreateCouponPage extends StatefulWidget {
 class _CreateCouponPageState extends State<CreateCouponPage> {
   Vendor vendor = Vendor();
   Coupon coupon = Coupon();
-  
+
   CreateCouponPageVM vm = CreateCouponPageVM();
+
+  static const double spacing = 10;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +31,22 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(32, 18, 32, 18),
+          padding: const EdgeInsets.fromLTRB(32, 8, 32, 8),
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  child: const Text('Register as Vendor'),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const VendorRegisterPage()));
+                  },
+                ),
+              ),
               Center(
                 child: Text(
                   'Create a coupon',
@@ -49,7 +63,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   size: 50,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: spacing),
               Text(
                 'Vendor Information',
                 style: GoogleFonts.roboto(
@@ -57,7 +71,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   fontSize: 18,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: spacing),
               SizedBox(
                 height: 40,
                 child: TextFormField(
@@ -72,55 +86,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: 40,
-                child: TextFormField(
-                  onChanged: (value) => vendor.vendorName = value,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(),
-                    hintText: 'Vendor Name',
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              //TODO implement location auto-fill box (if we want to store exact location of vendor in db)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      child: TextFormField(
-                        onChanged: (value) => vendor.country = value,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(8),
-                          border: OutlineInputBorder(),
-                          hintText: 'Vendor Country',
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      child: TextFormField(
-                        onChanged: (value) => vendor.city = value,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(8),
-                          border: OutlineInputBorder(),
-                          hintText: 'Vendor City',
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: spacing),
               Text(
                 'Coupon Information',
                 style: GoogleFonts.roboto(
@@ -128,7 +94,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   fontSize: 18,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: spacing),
               SizedBox(
                 height: 40,
                 child: TextFormField(
@@ -140,7 +106,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: spacing),
               SizedBox(
                 height: 40,
                 child: TextFormField(
@@ -277,7 +243,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
       ],
     );
   }
-
 
   void _showDateTimePicker() {
     DatePicker.showDateTimePicker(context,

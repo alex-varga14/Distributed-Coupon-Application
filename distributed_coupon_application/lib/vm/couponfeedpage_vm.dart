@@ -1,7 +1,7 @@
 import 'package:distributed_coupon_application/dal/coupon_dal.dart';
 import 'package:distributed_coupon_application/dal/vendor_dal.dart';
 import 'package:distributed_coupon_application/model/coupon.dart';
-import 'package:distributed_coupon_application/model/coupon_error.dart';
+import 'package:distributed_coupon_application/model/RequestError.dart';
 import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:result_type/result_type.dart';
 
