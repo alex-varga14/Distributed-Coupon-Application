@@ -3,6 +3,8 @@ from backendcore.sync.proto import vendor_pb2_grpc, vendor_pb2
 from backendcore.sync.proto import service_pb2_grpc
 from backendcore.sync import grpc_server
 
+from backendcore.sync import grpc_helper
+
 import grpc
 import threading
 
@@ -30,17 +32,9 @@ class GRPCClient:
         th = threading.Thread(target=task, args={}, kwargs={})
         th.start()
 
-    def CreateCoupon(self):
+    def CreateCoupon(self, coupon):
         self.execute(lambda stub: stub.CreateCoupon(
-            coupon_pb2.Coupon(
-                id=1,
-                vendorID=12,
-                expiryDate="2022-12-12",
-                title="title test",
-                description="test desc",
-                quantity=5,
-                isMultiuse=False
-            )
+            grpc_helper.from_backend_model(coupon)
         ))
 
     def CreateVendor(self):

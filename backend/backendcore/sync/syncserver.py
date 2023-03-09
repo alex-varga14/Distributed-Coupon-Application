@@ -12,8 +12,8 @@ class SyncServer:
     def createVendor(self):
         pass
 
-    def createCoupon(self):
-        print("Invocation received from leader")
+    def createCoupon(self, coupon):
+        print(f"Invocation received from leader. Model: {coupon}")
 
 def serve():
     grpc_server.serve(SyncServer());

@@ -16,7 +16,6 @@ grpcClient = grpc_client.GRPCClient(
 def createVendor():
     pass
 
-def createCoupon():
-    # TODO: receive model parameter, then pass parameter to grpcClient
-    grpcClient.CreateCoupon()
+def createCoupon(coupon):
+    grpcClient.CreateCoupon(coupon)
 

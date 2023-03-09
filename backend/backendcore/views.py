@@ -17,7 +17,6 @@ class PlaceholderAPIView(APIView):
     # GET /placeholder/?param1={},param2={}
     # param 1 is required, param 2 is optional
     def get(self, request, *args, **kwargs):
-        syncclient.createCoupon()
 
         param1 = request.query_params.get("param1")
         param2 = request.query_params.get("param2", "default_val")
@@ -51,7 +50,38 @@ class Placeholder1APIView(APIView):
 
 
 class CouponAPIView(APIView):
-    pass
+
+    # GET /coupons
+    def get(self, request, *args, **kwargs):
+        idd = request.query_params.get("id")
+        vendorId = request.query_params.get("vendorID")
+        expiryDate = request.query_params.get("expiryDate")
+        title = request.query_params.get("title")
+        description = request.query_params.get("description")
+        name = request.query_params.get("name")
+        isMultiuse = request.query_params.get("isMultiuse")
+
+        model = models.Coupon(123, 456, "2022-12-22", "title", "desc", 5, False)
+        syncclient.createCoupon(model)
+        serializer = serializers.CouponSerializer(model)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # POST /coupons
+    def post(self, request, *args, **kwargs):
+        idd = request.query_params.get("id")
+        vendorId = request.query_params.get("vendorID")
+        expiryDate = request.query_params.get("expiryDate")
+        title = request.query_params.get("title")
+        description = request.query_params.get("description")
+        name = request.query_params.get("name")
+        isMultiuse = request.query_params.get("isMultiuse")
+
+        # DAL call here, then return data model
+
+        model = models.Coupon(123, 456, "2022-12-22", "title", "desc", 5, False)
+        serializer = serializers.CouponSerializer(model)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
