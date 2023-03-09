@@ -16,33 +16,38 @@ from django.db import models
 class PlaceholderModel(models.Model):
     text = models.CharField(max_length=25)
     number = models.IntegerField()
-    
+
+    def __init__(self, text, number):
+        self.text = text
+        self.number = number
+   
+
 class Vendor(models.Model):
-    vendorID = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     country = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
     vendorName = models.CharField(max_length=20)
 
     def __init__(self, vendorID, country, city, vendorName):
-        self.vendorID = vendorID
+        self.id = vendorID
         self.country = country
         self.city = city
         self.vendorName = vendorName
     
 
 class Coupon(models.Model):
-    couponID = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True) # TODO: id is bad name
     vendorID = models.IntegerField()
-    date = models.DateField()
+    expiryDate = models.CharField(max_length=25)
     title = models.CharField(max_length=50)
     description = models.TextField(max_length=150)
     quantity = models.IntegerField()
     isMultiuse = models.BooleanField(default=False)
 
-    def __init__(self, couponID, vendorID, date, title, description, quantity,isMultiuse):
-        self.couponID = couponID
+    def __init__(self, couponID, vendorID, expiryDate, title, description, quantity,isMultiuse):
+        self.id = couponID
         self.vendorID = vendorID
-        self.date = date
+        self.expiryDate = expiryDate
         self.title = title
         self.description = description
         self.quantity = quantity

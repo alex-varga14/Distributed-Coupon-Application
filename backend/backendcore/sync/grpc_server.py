@@ -1,6 +1,9 @@
 from backendcore.sync.proto import coupon_pb2_grpc, coupon_pb2
 from backendcore.sync.proto import vendor_pb2_grpc, vendor_pb2
 from backendcore.sync.proto import service_pb2_grpc
+from backendcore import models
+
+from backendcore.sync import grpc_helper
 
 import grpc
 from concurrent import futures
@@ -21,20 +24,30 @@ class GRPCServer(service_pb2_grpc.RemoteService):
         self.syncServer = syncServer
 
     def CreateCoupon(self, request, context):
-        self.syncServer.createCoupon()
-        return coupon_pb2.Coupon(
-            id=1,
-            vendorID=12,
-            expiryDate="2022-12-12",
-            title="title test",
-            description="test desc",
-            quantity=5,
-            isMultiuse=False
-        )
+        # request is coupon_pb2.Coupon
+        model = grpc_helper.from_grpc_model(request)
+
+        self.syncServer.createCoupon(model)
+
+        return grpc_helper.from_backend_model(model)
+
+        # self.syncServer.createCoupon()
+        # return coupon_pb2.Coupon(
+        #     id=1,
+        #     vendorID=12,
+        #     expiryDate="2022-12-12",
+        #     title="title test",
+        #     description="test desc",
+        #     quantity=5,
+        #     isMultiuse=False
+        # )
 
     
     def CreateVendor(self, request, context):
-        print("create vendor")
+        # request is vendor_pb2.Vendor
+        model = grpc_helper.from_grpc_model(request)
+        self.syncServer.createVendor(model)
+        return grpc_helper.from_backend_model(model)
 
     def DestroyCoupon(self, request, context):
         print("destroy coupon")

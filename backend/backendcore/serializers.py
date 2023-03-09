@@ -10,9 +10,9 @@ class PlaceholderSerializer(serializers.ModelSerializer):
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Vendor
-        fields = ['vendorID', 'country', 'city', 'vendorName']
+        fields = ['id', 'country', 'city', 'vendorName']
 
 class CouponSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coupon
-        fields = ['couponID', 'vendorID', 'date', 'title', 'description', 'quantity','isMultiuse']
+        fields = ['id', 'vendorID', 'expiryDate', 'title', 'description', 'quantity','isMultiuse']

@@ -9,11 +9,12 @@ class SyncServer:
     must only call methods in the DAL (i.e. a layer below it).
     """
 
-    def createVendor(self):
+    def createVendor(self, vendor):
+        print(f"Invocation createVendor received from leader. Model: {vendor}")
         pass
 
-    def createCoupon(self):
-        print("Invocation received from leader")
+    def createCoupon(self, coupon):
+        print(f"Invocation createCoupon received from leader. Model: {coupon}")
 
 def serve():
     grpc_server.serve(SyncServer());
