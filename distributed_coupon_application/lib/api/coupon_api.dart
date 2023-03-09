@@ -23,7 +23,7 @@ class CouponAPI extends HttpService {
       c.expiryDate = DateTime.parse(map["expiryDate"]);
       c.title = map["title"];
       c.description = map["description"];
-      c.isMultiuse = (map["isMultiUse"] == 0) ? false : true;
+      c.isMultiuse = (map["isMultiuse"] == 0) ? false : true;
 
       return c as T;
 
@@ -36,7 +36,7 @@ class CouponAPI extends HttpService {
         c.expiryDate = DateTime.parse(map["expiryDate"]);
         c.title = map["title"];
         c.description = map["description"];
-        c.isMultiuse = (map["isMultiUse"] == 0) ? false : true;
+        c.isMultiuse = (map["isMultiuse"] == 0) ? false : true;
 
         return c;
       }).toList(growable: false) as T;
@@ -73,7 +73,7 @@ class CouponAPI extends HttpService {
         "title": coupon.title,
         "description": coupon.description,
         "name": "what is the name?", // TODO
-        "isMultiUse": coupon.isMultiuse
+        "isMultiuse": coupon.isMultiuse
       }
       );
   }
