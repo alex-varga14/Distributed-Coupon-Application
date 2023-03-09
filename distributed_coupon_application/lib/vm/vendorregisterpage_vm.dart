@@ -1,14 +1,14 @@
-import 'package:distributed_coupon_application/dal/coupon_dal.dart';
+import 'package:distributed_coupon_application/dal/vendor_dal.dart';
 import 'package:result_type/result_type.dart';
 
-import '../model/coupon.dart';
 import '../model/RequestError.dart';
+import '../model/vendor.dart';
 
-class CreateCouponPageVM {
-  CouponDAL dal = CouponDAL();
+class VendorRegisterPageVM {
+  VendorDAL dal = VendorDAL();
 
-  Future<Result<bool, String>> createCoupon(Coupon coupon) async {
-    Result<bool, RequestError> result = await dal.createCoupon(coupon);
+  Future<Result<bool, String>> createVendor(Vendor vendor) async {
+    Result<bool, RequestError> result = await dal.createVendor(vendor);
 
     return result.mapError((error) {
       if (error is RequestErrorInvalidRequest) {

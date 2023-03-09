@@ -34,7 +34,7 @@ class VendorAPI extends HttpService {
       v.id = map["id"];
       v.country = map["country"];
       v.city = map["city"];
-      v.vendorName = map["vendorName"];
+      v.vendorName = map["name"];
 
       return v as T;
 
@@ -79,14 +79,14 @@ class VendorAPI extends HttpService {
     return get<List<Vendor>>("/", {"country": country, "city": city, "name": name});
   }
 
-  Future<Result<Bool, APIError>> postVendor(Vendor vendor) {
-    return postJson<Bool>(
+  Future<Result<bool, APIError>> postVendor(Vendor vendor) {
+    return postJson<bool>(
       "/",
       {
         "id": vendor.id,
         "country": vendor.country,
         "city": vendor.city,
-        "vendorName": vendor.vendorName
+        "name": vendor.vendorName
       }
       );
   }
