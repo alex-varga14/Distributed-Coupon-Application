@@ -18,7 +18,7 @@ class PlaceholderModel(models.Model):
     number = models.IntegerField()
     
 class Vendor(models.Model):
-    vendorID = models.IntegerField()
+    vendorID = models.IntegerField(primary_key=True)
     country = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
     vendorName = models.CharField(max_length=20)
@@ -31,7 +31,7 @@ class Vendor(models.Model):
     
 
 class Coupon(models.Model):
-    couponID = models.IntegerField()
+    couponID = models.IntegerField(primary_key=True)
     vendorID = models.IntegerField()
     date = models.DateField()
     title = models.CharField(max_length=50)
