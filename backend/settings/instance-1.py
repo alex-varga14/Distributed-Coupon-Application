@@ -6,7 +6,7 @@ DATABASES = {
         'NAME': 'cpsc559',
         'USER':'root',
         'PASSWORD':'coupons1001',
-        'HOST':'3.145.15.144',
+        'HOST':'localhost', # this server is meant to be run on EC2
         'PORT': '5000',
     }
 }

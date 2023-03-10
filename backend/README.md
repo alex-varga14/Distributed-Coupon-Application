@@ -13,6 +13,11 @@ The database name is cpsc559, and the login credentials are as follows:
 * username: `root`
 * password: `coupons1001`
 
+The EC2 server has 8GiB of storage and 1GB of RAM.
+Due to the limited RAM size, 1GB of swap memory has been allocated. In the instance where the
+RAM is accidentally maxed out (noticable by having a frozen terminal and unresponsive HTTP requests), the server
+must be forcefully shutdown via the console and started again.
+
 ## Architecture
 Each Django instance is run as a Linux service with names `django{n}`.
 
@@ -40,6 +45,20 @@ Tables can be viewed by typing in `show tables;`. To see the properties of a tab
 
 The id column for our tables should have AUTO_INCREMENT. If this is not the case, type in
 `ALTER TABLE tablename CHANGE id id INT NOT NULL AUTO_INCREMENT`
+
+## Restarting the server
+When the server is restart, all services and all Docker instances will stop. The services are currently not starting
+by default. To start a service, run
+`sudo service django{n} start`
+
+To start a Docker instance, run
+`docker start DOCKER_NAME`.
+
+Docker instances can be listed by running `docker container ls -a`.
+
+There are a total of four services and four Docker instances that need to run.
+
+# Technical details
 
 ## Setting up a new DB
 When setting up a new DB, the MySQL server may respond that the user is not allowed to access the DB. This is because
