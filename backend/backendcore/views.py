@@ -98,7 +98,7 @@ class VendorsAPIView(APIView):
     # POST /vendors
     def post(self, request, *args, **kwargs):
         couponID = request.query_params.get("id") # TODO: what is this for?
-        vendorID = int(request.query_params.get("vendorID"))
+        vendorID = request.query_params.get("vendorID") # TODO: should we eliminate this:
         title = request.query_params.get("title") # TODO: what is this for?
         country = request.query_params.get("country")
         city = request.query_params.get("city")

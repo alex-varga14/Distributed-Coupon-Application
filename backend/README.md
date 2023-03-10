@@ -58,7 +58,7 @@ Docker instances can be listed by running `docker container ls -a`.
 
 There are a total of four services and four Docker instances that need to run.
 
-# Technical details
+# Server modifications
 
 ## Setting up a new DB
 When setting up a new DB, the MySQL server may respond that the user is not allowed to access the DB. This is because
@@ -73,4 +73,8 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
 to allow all source IPs. (Not good from a security standpoint, but it's the fastest way to get it working.)
+
+## Scripts
+There are helper scripts in the home directory on EC2. These can be used to quickly restart multiple processes at
+once.
 
