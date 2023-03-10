@@ -41,3 +41,17 @@ Tables can be viewed by typing in `show tables;`. To see the properties of a tab
 The id column for our tables should have AUTO_INCREMENT. If this is not the case, type in
 `ALTER TABLE tablename CHANGE id id INT NOT NULL AUTO_INCREMENT`
 
+## Setting up a new DB
+When setting up a new DB, the MySQL server may respond that the user is not allowed to access the DB. This is because
+the MySQL server only permits connections from localhost. This
+can be fixed by accessing the Docker instance with the command
+`docker -it DOCKER_INSTANCE_NAME bash`
+
+In the shell, connect to MySQL by running `mysql -u root -pcoupons1001`. Then, execute the following commands:
+```
+CREATE USER 'root'@'%' IDENTIFIED BY 'coupons1001';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
+to allow all source IPs. (Not good from a security standpoint, but it's the fastest way to get it working.)
+
