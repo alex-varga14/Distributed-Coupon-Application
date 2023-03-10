@@ -17,23 +17,11 @@ class PlaceholderModel(models.Model):
     text = models.CharField(max_length=25)
     number = models.IntegerField()
 
-    def __init__(self, text, number):
-        self.text = text
-        self.number = number
-   
-
 class Vendor(models.Model):
     id = models.IntegerField(primary_key=True)
     country = models.CharField(max_length=20)
     city = models.CharField(max_length=20)
     vendorName = models.CharField(max_length=20)
-
-    def __init__(self, vendorID, country, city, vendorName):
-        self.id = vendorID
-        self.country = country
-        self.city = city
-        self.vendorName = vendorName
-    
 
 class Coupon(models.Model):
     id = models.IntegerField(primary_key=True) # TODO: id is bad name
@@ -43,15 +31,6 @@ class Coupon(models.Model):
     description = models.TextField(max_length=150)
     quantity = models.IntegerField()
     isMultiuse = models.BooleanField(default=False)
-
-    def __init__(self, couponID, vendorID, expiryDate, title, description, quantity,isMultiuse):
-        self.id = couponID
-        self.vendorID = vendorID
-        self.expiryDate = expiryDate
-        self.title = title
-        self.description = description
-        self.quantity = quantity
-        self.isMultiuse = isMultiuse
 
     def decrement_quantity(self):
         self.quantity = self.quantity - 1

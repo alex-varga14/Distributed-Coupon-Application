@@ -5,8 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from backendcore import models, serializers
-
-from backendcore.sync import syncclient
+from backendcore import dal
 
 # Create your views here.
 
@@ -61,30 +60,23 @@ class CouponsAPIView(APIView):
         name = request.query_params.get("name")
         isMultiuse = request.query_params.get("isMultiuse")
 
-        # DAL call here, then return data model
-
-        # temp code (can be reused)
-        model = models.Coupon(123, 456, "2022-12-22", "title", "desc", 5, False)
-        syncclient.createCoupon(model)
-        serializer = serializers.CouponSerializer(model)
+        coupons = dal.getCoupons(idd, vendorId, expiryDate, title, description, name, isMultiuse)
+        serializer = serializers.CouponSerializer(coupons, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # POST /coupons
     def post(self, request, *args, **kwargs):
-        idd = request.query_params.get("id")
         vendorId = request.query_params.get("vendorID")
         expiryDate = request.query_params.get("expiryDate")
         title = request.query_params.get("title")
         description = request.query_params.get("description")
-        name = request.query_params.get("name")
+        quantity = request.query_params.get("quantity")
         isMultiuse = request.query_params.get("isMultiuse")
 
-        # DAL call here, then return data model
 
-        # temp code (can be reused)
-        model = models
-        serializer = serializers.CouponSerializer(model)
+        coupon = dal.createCoupon(vendorId, expiryDate, title, description, quantity, isMultiuse)
+        serializer = serializers.CouponSerializer(coupon)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class VendorsAPIView(APIView):
