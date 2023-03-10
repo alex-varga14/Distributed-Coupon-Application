@@ -2,8 +2,9 @@ from backendcore.sync.proto import coupon_pb2_grpc, coupon_pb2
 from backendcore.sync.proto import vendor_pb2_grpc, vendor_pb2
 from backendcore.sync.proto import service_pb2_grpc
 from backendcore.sync import grpc_server
-
 from backendcore.sync import grpc_helper
+
+from django.conf import settings
 
 import grpc
 import threading
@@ -17,7 +18,7 @@ class GRPCClient:
         def task():
             for host in self.hosts:
                 # don't send it to ourselves
-                if host[-5:] == str(grpc_server.port): # to bypass, add 'and False'
+                if host[-5:] == str(settings.GRPC_PORT): # to bypass, add 'and False'
                     continue
 
                 with(grpc.insecure_channel(host) as channel):

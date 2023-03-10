@@ -5,8 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from backendcore import models, serializers
-
-from backendcore.sync import syncclient
+from backendcore import dal
 
 # Create your views here.
 
@@ -61,30 +60,23 @@ class CouponsAPIView(APIView):
         name = request.query_params.get("name")
         isMultiuse = request.query_params.get("isMultiuse")
 
-        # DAL call here, then return data model
-
-        # temp code (can be reused)
-        model = models.Coupon(123, 456, "2022-12-22", "title", "desc", 5, False)
-        syncclient.createCoupon(model)
-        serializer = serializers.CouponSerializer(model)
+        coupons = dal.getCoupons(idd, vendorId, expiryDate, title, description, name, isMultiuse)
+        serializer = serializers.CouponSerializer(coupons, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # POST /coupons
     def post(self, request, *args, **kwargs):
-        idd = request.query_params.get("id")
-        vendorId = request.query_params.get("vendorID")
+        vendorId = int(request.query_params.get("vendorID"))
         expiryDate = request.query_params.get("expiryDate")
         title = request.query_params.get("title")
         description = request.query_params.get("description")
-        name = request.query_params.get("name")
-        isMultiuse = request.query_params.get("isMultiuse")
+        quantity = int(request.query_params.get("quantity"))
+        isMultiuse = bool(request.query_params.get("isMultiuse"))
 
-        # DAL call here, then return data model
 
-        # temp code (can be reused)
-        model = models
-        serializer = serializers.CouponSerializer(model)
+        coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, True)
+        serializer = serializers.CouponSerializer(coupon)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class VendorsAPIView(APIView):
@@ -98,29 +90,23 @@ class VendorsAPIView(APIView):
         city = request.query_params.get("city")
         name = request.query_params.get("name")
 
-        # DAL call here, then return data model
-
-        # temp code (can be reused)
-        model = models.Vendor(vendorID, country, city, name)
-        syncclient.createVendor(model)
-        serializer = serializers.VendorSerializer(model)
+        vendor = dal.getVendors(vendorID, country, city, name)
+        serializer = serializers.VendorSerializer(vendor, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # POST /vendors
     def post(self, request, *args, **kwargs):
         couponID = request.query_params.get("id") # TODO: what is this for?
-        vendorID = request.query_params.get("vendorID")
+        vendorID = request.query_params.get("vendorID") # TODO: should we eliminate this:
         title = request.query_params.get("title") # TODO: what is this for?
         country = request.query_params.get("country")
         city = request.query_params.get("city")
         name = request.query_params.get("name")
 
-        # DAL call here, then return data model
 
-        # temp code (can be reused)
-        model = models.Vendor(vendorID, country, city, name)
-        serializer = serializers.VendorSerializer(model)
+        vendor = dal.createVendor(None, country, city, name, True)
+        serializer = serializers.VendorSerializer(vendor)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
