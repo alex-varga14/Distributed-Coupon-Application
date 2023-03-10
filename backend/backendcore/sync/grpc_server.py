@@ -2,8 +2,9 @@ from backendcore.sync.proto import coupon_pb2_grpc, coupon_pb2
 from backendcore.sync.proto import vendor_pb2_grpc, vendor_pb2
 from backendcore.sync.proto import service_pb2_grpc
 from backendcore import models
-
 from backendcore.sync import grpc_helper
+
+from django.conf import settings
 
 import grpc
 from concurrent import futures
@@ -13,7 +14,7 @@ from random import randrange
 from backendcore.sync import syncserver
 import threading
 
-port = 0
+# port = 0
 
 class GRPCServer(service_pb2_grpc.RemoteService):
     """
@@ -42,7 +43,7 @@ class GRPCServer(service_pb2_grpc.RemoteService):
         #     isMultiuse=False
         # )
 
-    
+
     def CreateVendor(self, request, context):
         # request is vendor_pb2.Vendor
         model = grpc_helper.from_grpc_model(request)
@@ -55,15 +56,15 @@ class GRPCServer(service_pb2_grpc.RemoteService):
     def DestroyVendor(self, request, context):
         print("destroy vendor")
 
-def is_port_available(port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        s.bind(("127.0.0.1", port))
-        return True
-    except socket.error as e:
-        return False
-    finally:
-        s.close()
+# def is_port_available(port):
+#     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     try:
+#         s.bind(("127.0.0.1", port))
+#         return True
+#     except socket.error as e:
+#         return False
+#     finally:
+#         s.close()
 
 def serve(syncServer):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
@@ -73,12 +74,14 @@ def serve(syncServer):
     # while (not is_port_available(p)):
     #     p = randrange(10000) + 50000
 
-    p = 50000
-    while (not is_port_available(p)):
-        p += 1
+    # p = 50000
+    # while (not is_port_available(p)):
+        # p += 1
 
-    global port
-    port = p
+    # global port
+    # port = p
+
+    p = settings.GRPC_PORT
 
     def task():
         server.add_insecure_port(f"[::]:{p}")

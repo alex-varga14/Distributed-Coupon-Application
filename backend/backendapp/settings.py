@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+GRPC_PORT=50000
+
 # Application definition
 
 INSTALLED_APPS = [
