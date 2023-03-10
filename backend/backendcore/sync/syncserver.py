@@ -1,4 +1,5 @@
 from backendcore.sync import grpc_server
+from backendcore import dal
 
 class SyncServer:
     """
@@ -11,10 +12,11 @@ class SyncServer:
 
     def createVendor(self, vendor):
         print(f"Invocation createVendor received from leader. Model: {vendor}")
-        pass
+        dal.createVendor(vendor.id, vendor.country, vendor.city, vendor.vendorName)
 
     def createCoupon(self, coupon):
         print(f"Invocation createCoupon received from leader. Model: {coupon}")
+        dal.createCoupon(coupon.id, coupon.vendorID, coupon.expiryDate, coupon.title, coupon.description, coupon.quantity, coupon.isMultiuse)
 
 def serve():
     grpc_server.serve(SyncServer());

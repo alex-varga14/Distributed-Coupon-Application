@@ -75,7 +75,7 @@ class CouponsAPIView(APIView):
         isMultiuse = request.query_params.get("isMultiuse")
 
 
-        coupon = dal.createCoupon(vendorId, expiryDate, title, description, quantity, isMultiuse)
+        coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, True)
         serializer = serializers.CouponSerializer(coupon)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -90,12 +90,8 @@ class VendorsAPIView(APIView):
         city = request.query_params.get("city")
         name = request.query_params.get("name")
 
-        # DAL call here, then return data model
-
-        # temp code (can be reused)
-        model = models.Vendor(vendorID, country, city, name)
-        syncclient.createVendor(model)
-        serializer = serializers.VendorSerializer(model)
+        vendor = dal.getVendors(vendorID, country, city, name)
+        serializer = serializers.VendorSerializer(vendor, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -108,11 +104,9 @@ class VendorsAPIView(APIView):
         city = request.query_params.get("city")
         name = request.query_params.get("name")
 
-        # DAL call here, then return data model
 
-        # temp code (can be reused)
-        model = models.Vendor(vendorID, country, city, name)
-        serializer = serializers.VendorSerializer(model)
+        vendor = dal.createVendor(None, country, city, name, True)
+        serializer = serializers.VendorSerializer(vendor)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
