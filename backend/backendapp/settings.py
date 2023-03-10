@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-rohwbgav)*t(!848%dl$-3f4(b-lo3l%*)%j_#dg!x97g8_=*d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 GRPC_PORT=50000
 
