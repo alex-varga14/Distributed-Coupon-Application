@@ -18,14 +18,23 @@ Due to the limited RAM size, 1GB of swap memory has been allocated. In the insta
 RAM is accidentally maxed out (noticable by having a frozen terminal and unresponsive HTTP requests), the server
 must be forcefully shutdown via the console and started again.
 
-## Architecture
-Each Django instance is run as a Linux service with names `django{n}`.
-
 ## Running the application
 There are four settings configured for each replica. Choosing a setting can be done as follows:
 `python manage.py runserver 8000 --settings=settings.instance-x`
 
+When running on the EC2 server, make sure `--settings=settings.instance-x` is specified.
 All the setting files can be seen under the settings/ directory.
+
+When running locally, omitting the `--settings` option will default to the original config in settings.py. This
+default setting will connect to coupons-db-1 on EC2. Alternatively, `-settings=settings.local-instance-2` can
+be used to connect to coupons-db-2 on EC2. This is useful when trying to test replication.
+
+Please note that when testing locally, the databases will no longer be synchronized and will require a reset.
+This can be done by running ./clear_all_db on the EC2 server.
+
+
+## Architecture
+Each Django instance is run as a Linux service with names `django{n}`.
 
 ## Modifying the data model
 
