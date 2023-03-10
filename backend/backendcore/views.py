@@ -67,12 +67,12 @@ class CouponsAPIView(APIView):
 
     # POST /coupons
     def post(self, request, *args, **kwargs):
-        vendorId = request.query_params.get("vendorID")
+        vendorId = int(request.query_params.get("vendorID"))
         expiryDate = request.query_params.get("expiryDate")
         title = request.query_params.get("title")
         description = request.query_params.get("description")
-        quantity = request.query_params.get("quantity")
-        isMultiuse = request.query_params.get("isMultiuse")
+        quantity = int(request.query_params.get("quantity"))
+        isMultiuse = bool(request.query_params.get("isMultiuse"))
 
 
         coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, True)
@@ -98,7 +98,7 @@ class VendorsAPIView(APIView):
     # POST /vendors
     def post(self, request, *args, **kwargs):
         couponID = request.query_params.get("id") # TODO: what is this for?
-        vendorID = request.query_params.get("vendorID")
+        vendorID = int(request.query_params.get("vendorID"))
         title = request.query_params.get("title") # TODO: what is this for?
         country = request.query_params.get("country")
         city = request.query_params.get("city")

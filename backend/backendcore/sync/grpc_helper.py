@@ -51,6 +51,12 @@ def from_backend_model(model):
             idd = -1
         else:
             idd = model.id
+        print(type(idd))
+        print(type(model.vendorID))
+        print(type(model.expiryDate))
+        print(type(model.title))
+        print(type(model.quantity))
+        print(type(model.isMultiuse))
         return coupon_pb2.Coupon(
             id = idd,
             vendorID = model.vendorID,
