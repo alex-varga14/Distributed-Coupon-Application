@@ -11,5 +11,5 @@ DATABASES = {
     }
 }
 
-grpc_port=50000
+GRPC_PORT=50000
 
