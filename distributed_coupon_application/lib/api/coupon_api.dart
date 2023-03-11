@@ -9,7 +9,7 @@ import 'package:result_type/result_type.dart';
 class CouponAPI extends HttpService {
   @override
   String baseUrl() {
-    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons";
+    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons/";
   }
   
   @override
