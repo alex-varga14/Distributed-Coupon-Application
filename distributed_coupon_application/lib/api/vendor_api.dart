@@ -22,7 +22,7 @@ extension on Result<List<Vendor>, APIError> {
 class VendorAPI extends HttpService {
   @override
   String baseUrl() {
-    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/vendors";
+    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/vendors/";
   }
   
   @override

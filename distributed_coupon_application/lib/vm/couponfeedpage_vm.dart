@@ -28,6 +28,7 @@ class CouponFeedPageVM {
     Result<List<Vendor>, RequestError> vendorsResult = await vendorDAL.getAllVendors();
 
     if (couponsResult.isFailure || vendorsResult.isFailure) {
+      print("vm get fail");
       // TODO: handle error
       return Future.delayed(const Duration(seconds: 0), () => []);
     }
@@ -35,7 +36,13 @@ class CouponFeedPageVM {
     List<Coupon> coupons = couponsResult.success;
     List<Vendor> vendors = vendorsResult.success;
 
+    print("Coupons: $coupons");
+    print("Vendors: $vendors");
+
+    List<Pair<Coupon, Vendor>> data = coupons.map((c) => Pair(c, vendors.firstWhere((v) => c.vendorID == v.id))).toList();
+    print("Mapped: $data");
+
     // left join on coupons
-    return coupons.map((c) => Pair(c, vendors.firstWhere((v) => c.vendorID == v.id))).toList();
+    return data;
   }
 }
