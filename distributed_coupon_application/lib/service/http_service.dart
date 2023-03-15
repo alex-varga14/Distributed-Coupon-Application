@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:distributed_coupon_application/model/api_error.dart';
 import 'package:http/http.dart' as http;
@@ -6,11 +7,12 @@ import 'package:result_type/result_type.dart';
 
 abstract class HttpService {
 
-  String baseUrl();
+  Future<String> baseUrl();
   T? deserialize<T>(dynamic data);
 
   Future<Result<T, APIError>> postJson<T>(String endpoint, [Map<String, Object>? params]) async {
-    var response = await http.post(Uri.parse(baseUrl() + endpoint), body: jsonEncode(params));
+    String base_url =  await baseUrl();
+    var response = await http.post(Uri.parse(base_url + endpoint), body: jsonEncode(params));
 
     if (response.statusCode < 200 || response.statusCode > 299) {
       return Failure(APIError.HTTPError(response.statusCode, response.reasonPhrase));
@@ -26,7 +28,8 @@ abstract class HttpService {
   }
 
   Future<Result<T, APIError>> get<T>(String endpoint, [Map<String, Object>? params]) async {
-    String url = "${baseUrl()}$endpoint";
+    String base_url =  await baseUrl();
+    String url = "$base_url$endpoint";
 
     if (params != null) {
       String paramsStr = params.keys.map((key) => "$key=${params[key]}").join("&");
@@ -47,5 +50,18 @@ abstract class HttpService {
       return Failure(APIError.MappingError());
     }
     return Success(result);
+  }
+
+  Future<bool> isUrlAlive(String url) async {
+    try {
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode != 200)
+      {
+        return false;
+      }
+      return true;
+    } on SocketException {
+      return false;
+    }
   }
 }

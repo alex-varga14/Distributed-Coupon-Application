@@ -5,11 +5,16 @@ import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/service/http_service.dart';
 import 'package:result_type/result_type.dart';
 
-// note: not usable yet. /coupons endpoint not done
 class CouponAPI extends HttpService {
   @override
-  String baseUrl() {
-    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons/";
+  Future<String> baseUrl() async {
+    String url1 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons/"; //main AWS Gateway
+    String url2 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons/"; //replica AWS Gateway
+
+    //Assume at least 1 of the urls will be alive always
+    var isUrl1Alive = await isUrlAlive(url1);
+
+    return isUrl1Alive ? url1 : url2; 
   }
   
   @override
