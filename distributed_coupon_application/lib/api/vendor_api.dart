@@ -21,8 +21,14 @@ extension on Result<List<Vendor>, APIError> {
 
 class VendorAPI extends HttpService {
   @override
-  String baseUrl() {
-    return "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/vendors/";
+  Future<String> baseUrl() async{
+    String url1 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/vendors/"; //main AWS Gateway
+    String url2 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/vendors/"; //replica AWS Gateway
+
+    //Assume at least 1 of the urls will be alive always
+    var isUrl1Alive = await isUrlAlive(url1);
+
+    return isUrl1Alive ? url1 : url2;
   }
   
   @override
