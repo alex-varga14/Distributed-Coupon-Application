@@ -16,3 +16,9 @@ class CouponSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coupon
         fields = ['id', 'vendorID', 'expiryDate', 'title', 'description', 'quantity','isMultiuse']
+
+class ProcSerializer(serializers.Serializer):
+    pid = serializers.IntegerField()
+    leader_result = serializers.BooleanField()
+
+

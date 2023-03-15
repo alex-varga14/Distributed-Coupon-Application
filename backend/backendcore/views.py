@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from backendcore import models, serializers
 from backendcore import dal
+from backendcore import proc
 
 # Create your views here.
 
@@ -111,7 +112,32 @@ class VendorsAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ProcLeaderAPIView(APIView):
 
+
+    # GET /proc/leader
+    def get(self, request, *args, **kwargs):
+        proc.elect_leader(request.META["SERVER_PORT"])
+        pass
+
+class ProcLeaderReqAPIView(APIView):
+
+    # GET /proc/leader/<req>
+    # returns {"leader_result": False} if the 
+    # remote process has a lower PID
+    def get(self, request, *args, **kwargs):
+        pid = kwargs["pid"]
+        try:
+            int(pid)
+        except TypeError:
+            return Response("Bad request. Not an integer", status=status.HTTP_400_BAD_REQUEST)
+
+        result = proc.is_remote_pid_higher(int(pid))
+
+        data = vars(models.Proc(leader_result=result))
+        serializer = serializers.ProcSerializer(data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

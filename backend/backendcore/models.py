@@ -35,3 +35,11 @@ class Coupon(models.Model):
     def decrement_quantity(self):
         self.quantity = self.quantity - 1
 
+class Proc():
+
+    def __init__(self, *args, **kwargs):
+        self.pid = kwargs.get("pid", -1)
+        self.leader_result = kwargs.get("leader_result", False)
+
+
+
