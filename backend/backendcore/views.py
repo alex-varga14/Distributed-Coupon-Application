@@ -128,6 +128,13 @@ class VendorsAPIView(APIView):
 
 class ProcLeaderAPIView(APIView):
 
+    # GET /proc/leader
+    # returns True if the replica is a leader
+    def get(self, request, *args, **kwargs):
+        p = port(request)
+        data = vars(models.ProcLeader(proc.is_leader(p), proc.get_leader(p)))
+        serializer = serializers.ProcLeaderSerializer(data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     # POST /proc/leader?hosts=a,b,c
@@ -144,10 +151,11 @@ class ProcLeaderAPIView(APIView):
 
         # subsequent leadre eldctions will have hosts filled with IPs. for new
         # elections, the hosts is empty.
-        (leader_id, leader_host) = proc.elect_leader(request.META["SERVER_PORT"], hosts)
+        p = port(request)
+        leader_host = proc.elect_leader(p, hosts)
 
-        data = vars(models.Proc(leader_id, leader_host))
-        serializer = serializers.ProcSerializer(data)
+        data = vars(models.ProcLeader(proc.is_leader(p), leader_host))
+        serializer = serializers.ProcLeaderSerializer(data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

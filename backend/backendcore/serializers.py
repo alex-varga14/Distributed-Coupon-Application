@@ -17,14 +17,11 @@ class CouponSerializer(serializers.ModelSerializer):
         model = models.Coupon
         fields = ['id', 'vendorID', 'expiryDate', 'title', 'description', 'quantity','isMultiuse']
 
-class ProcSerializer(serializers.Serializer):
-    pid = serializers.IntegerField()
+class ProcLeaderSerializer(serializers.Serializer):
+    is_leader = serializers.BooleanField()
     leader_host = serializers.CharField(max_length=255)
 
 class ProcInternalReqSerializer(serializers.Serializer):
     leader_result = serializers.BooleanField()
-
-class ProcLeaderSerializer(serializers.Serializer):
-    is_leader = serializers.BooleanField()
 
 

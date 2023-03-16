@@ -35,21 +35,15 @@ class Coupon(models.Model):
     def decrement_quantity(self):
         self.quantity = self.quantity - 1
 
-# Redundant models, but helps clarify things
-
-class Proc():
-
-    def __init__(self, pid, leader_host):
-        self.pid = pid
+class ProcLeader():
+    def __init__(self, is_leader, leader_host):
+        self.is_leader = is_leader
         self.leader_host = leader_host
+
 
 class ProcInternalReq():
     def __init__(self, leader_result):
         self.leader_result = leader_result
-
-class ProcLeader():
-    def __init__(self, is_leader):
-        self.is_leader = is_leader
 
 
 

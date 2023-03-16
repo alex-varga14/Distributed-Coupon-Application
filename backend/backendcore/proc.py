@@ -100,14 +100,13 @@ def elect_leader(current_port, hosts=[]):
         ).json()
 
 
-        leader_id = r["pid"]
         leader_host = r["leader_host"]
 
         print(f"Got leader! host={leader_host}, pid={leader_id}")
 
     print("**********End leader election**********\n\n")
 
-    return (leader_id, leader_host)
+    return leader_host
 
 # checks if it is a leader. if no leader is assigned, it will begin
 # leader election
