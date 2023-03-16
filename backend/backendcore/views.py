@@ -14,10 +14,8 @@ import requests
 def port(request):
     return request.META["SERVER_PORT"]
 
-def redirectToLeader(request):
-    p = port(request)
-    return redirect(f"{proc.get_leader(p)}{request.get_full_path()}")
-
+def notALeader():
+    return Response("Not a leader.", status = status.HTTP_421_MISDIRECTED_REQUEST)
 
 # Create your views here.
 
@@ -29,7 +27,7 @@ class PlaceholderAPIView(APIView):
     # param 1 is required, param 2 is optional
     def get(self, request, *args, **kwargs):
 
-        if not proc.is_leader(port(request)): return redirectToLeader(request)
+        if not proc.is_leader(port(request)): return notALeader()
 
         param1 = request.query_params.get("param1")
         param2 = request.query_params.get("param2", "default_val")
@@ -46,6 +44,8 @@ class PlaceholderAPIView(APIView):
     # POST /placeholder with a body parameter "data"
     def post(self, request, *args, **kwargs):
 
+        if not proc.is_leader(port(request)): return notALeader()
+
         param = request.query_params.get("data")
 
         model = models.PlaceholderModel(f"post data is {param}", 456)
@@ -56,6 +56,9 @@ class PlaceholderAPIView(APIView):
 class Placeholder1APIView(APIView):
     # GET /placeholder1/{parameter}/
     def get(self, request, *args, **kwargs):
+
+        if not proc.is_leader(port(request)): return notALeader()
+
         query = kwargs["query"]
 
         model = models.PlaceholderModel(f"query is {query}", 5)
@@ -67,6 +70,9 @@ class CouponsAPIView(APIView):
 
     # GET /coupons
     def get(self, request, *args, **kwargs):
+
+        if not proc.is_leader(port(request)): return notALeader()
+
         idd = request.query_params.get("id")
         vendorId = request.query_params.get("vendorID")
         expiryDate = request.query_params.get("expiryDate")
@@ -82,6 +88,9 @@ class CouponsAPIView(APIView):
 
     # POST /coupons
     def post(self, request, *args, **kwargs):
+
+        if not proc.is_leader(port(request)): return notALeader()
+
         vendorId = int(request.query_params.get("vendorID"))
         expiryDate = request.query_params.get("expiryDate")
         title = request.query_params.get("title")
@@ -98,6 +107,9 @@ class VendorsAPIView(APIView):
 
     # GET /vendors
     def get(self, request, *args, **kwargs):
+
+        if not proc.is_leader(port(request)): return notALeader()
+
         couponID = request.query_params.get("id") # TODO: what is this for?
         vendorID = request.query_params.get("vendorID")
         title = request.query_params.get("title") # TODO: what is this for?
@@ -112,6 +124,9 @@ class VendorsAPIView(APIView):
 
     # POST /vendors
     def post(self, request, *args, **kwargs):
+
+        if not proc.is_leader(port(request)): return notALeader()
+
         couponID = request.query_params.get("id") # TODO: what is this for?
         vendorID = request.query_params.get("vendorID") # TODO: should we eliminate this:
         title = request.query_params.get("title") # TODO: what is this for?
