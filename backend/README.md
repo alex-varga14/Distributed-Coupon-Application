@@ -34,8 +34,8 @@ The data model returned from the election process is as follows:
 ## Re-election process
 It is up to the front end to detect dead servers and perform a new leader election. A re-election can be requested
 by performing a `POST /proc/leader`. This returns a ProcLeader data model containing two values:
-* `is_leader` indicating whether the replica processing the request is determined to be a leader
-* `leader_host` indicating the host of the leader replica (in the format of `http://1.2.3.4:1234`).
+* `is_leader` indicating whether the replica processing the request won itself as a leader
+* `leader_host` containing the host of the leader replica (in the format of `http://1.2.3.4:1234`).
 
 ## Determining the leader
 
