@@ -53,7 +53,7 @@ The steps are as follows:
 Assuming `P` is the replica receiving a `POST` request, `pid` is the process ID of `P`, and `o_pid` is the
 process ID of other replicas (`pid` != `o_pid`), then, when `P` receives a `POST /proc/leader`,
 1. Send to all replicas (other than itself) a `GET /proc/leader/<id>`, where `<id>` is the current replica's PID
-2. Receive all responses with either a `YES` or a `NO`:
+2. Receive all responses with either a `True` (YES) or a `False` (NO):
     * `YES` indicates that the process **can** become a leader (`o_pid` &lt;= `pid`)
     * `NO` indicates that the process **cannot** become a leader (`o_pid` &gt; `pid`)
 3. Filter the list of hosts, keeping only hosts that reject `P`'s request (in other words, we have a list of
