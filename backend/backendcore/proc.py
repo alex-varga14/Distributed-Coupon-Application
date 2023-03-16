@@ -10,7 +10,7 @@ leader_endpoint = "/proc/leader"
 leader_host = ""
 leader_id = -1
 
-def elect_leader(current_port, hosts):
+def elect_leader(current_port, hosts=[]):
     """
     perform leader election.
 
@@ -103,14 +103,18 @@ def elect_leader(current_port, hosts):
 
     return (leader_id, leader_host)
 
-def set_leader(host, host_pid):
-    global leader_host, host_id
-    leader_host = host
-    host_id = host_pid
+# checks if it is a leader. if no leader is assigned, it will begin
+# leader election
+def is_leader(current_port):
+    if leader_id == -1:
+        elect_leader(current_port)
 
-def is_leader():
-    return host_id == os.getpid()
+    return leader_id == os.getpid()
 
+def get_leader(current_port):
+    if leader_id == -1:
+        elect_leader(current_port)
+    return leader_host
 
 def is_remote_pid_higher(remote_pid):
     local_pid = os.getpid()

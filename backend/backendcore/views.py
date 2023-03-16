@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.response import Response
@@ -11,6 +11,14 @@ from backendcore import utils
 
 import requests
 
+def port(request):
+    return request.META["SERVER_PORT"]
+
+def redirectToLeader(request):
+    p = port(request)
+    return redirect(f"{proc.get_leader(p)}{request.get_full_path()}")
+
+
 # Create your views here.
 
 # https://www.django-rest-framework.org/tutorial/quickstart/
@@ -20,6 +28,8 @@ class PlaceholderAPIView(APIView):
     # GET /placeholder/?param1={},param2={}
     # param 1 is required, param 2 is optional
     def get(self, request, *args, **kwargs):
+
+        if not proc.is_leader(port(request)): return redirectToLeader(request)
 
         param1 = request.query_params.get("param1")
         param2 = request.query_params.get("param2", "default_val")
@@ -35,6 +45,7 @@ class PlaceholderAPIView(APIView):
 
     # POST /placeholder with a body parameter "data"
     def post(self, request, *args, **kwargs):
+
         param = request.query_params.get("data")
 
         model = models.PlaceholderModel(f"post data is {param}", 456)
