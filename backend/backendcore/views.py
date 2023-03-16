@@ -128,28 +128,28 @@ class VendorsAPIView(APIView):
 
 class ProcLeaderAPIView(APIView):
 
-    # GET /proc/leader?hosts=a,b,c
+
+
+    # POST /proc/leader?hosts=a,b,c
     #
     # initiates leader election with the given hosts, or attempt to connect
     # to all if not given
-    def get(self, request, *args, **kwargs):
-        hosts = request.query_params.get("hosts", [])
+    def post(self, request, *args, **kwargs):
+        # hosts = request.query_params.get("hosts", [])
+        hosts = request.data.get("hosts", [])
         if len(hosts) != 0:
-            hosts = requests.utils.unquote(hosts)
-            hosts = utils.fromBase64(hosts)
+            # hosts = requests.utils.unquote(hosts)
+            # hosts = utils.fromBase64(hosts)
             hosts = hosts.split(",")
 
         # subsequent leadre eldctions will have hosts filled with IPs. for new
         # elections, the hosts is empty.
         (leader_id, leader_host) = proc.elect_leader(request.META["SERVER_PORT"], hosts)
 
-        data = vars(models.Proc(pid=leader_id, leader_host=leader_host))
+        data = vars(models.Proc(leader_id, leader_host))
         serializer = serializers.ProcSerializer(data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request, *args, **kwargs):
-        print(request.data)
 
 
 class ProcLeaderReqAPIView(APIView):
@@ -167,8 +167,8 @@ class ProcLeaderReqAPIView(APIView):
 
         result = proc.is_remote_pid_higher(int(pid))
 
-        data = vars(models.Proc(leader_result=result))
-        serializer = serializers.ProcLeaderReqSerializer(data)
+        data = vars(models.ProcInternalReq(leader_result=result))
+        serializer = serializers.ProcInternalReqSerializer(data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

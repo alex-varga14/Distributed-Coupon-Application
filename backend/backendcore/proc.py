@@ -88,11 +88,17 @@ def elect_leader(current_port, hosts=[]):
 
         # need string as base64
         hostsStr = ",".join(hosts)
-        b64 = utils.toBase64(hostsStr)
-        urlStr = requests.utils.quote(b64)
+        # b64 = utils.toBase64(hostsStr)
+        # urlStr = requests.utils.quote(b64)
 
-        url = f"{nextHost}{leader_endpoint}/?hosts={urlStr}"
-        r = requests.get(url).json()
+        # url = f"{nextHost}{leader_endpoint}/?hosts={urlStr}"
+        url = f"{nextHost}{leader_endpoint}/"
+        # r = requests.get(url).json()
+        r = requests.post(
+            url,
+            json = {"hosts": hostsStr}
+        ).json()
+
 
         leader_id = r["pid"]
         leader_host = r["leader_host"]

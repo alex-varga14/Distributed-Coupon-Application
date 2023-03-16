@@ -21,7 +21,10 @@ class ProcSerializer(serializers.Serializer):
     pid = serializers.IntegerField()
     leader_host = serializers.CharField(max_length=255)
 
-class ProcLeaderReqSerializer(serializers.Serializer):
+class ProcInternalReqSerializer(serializers.Serializer):
     leader_result = serializers.BooleanField()
+
+class ProcLeaderSerializer(serializers.Serializer):
+    is_leader = serializers.BooleanField()
 
 
