@@ -16,3 +16,12 @@ class CouponSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coupon
         fields = ['id', 'vendorID', 'expiryDate', 'title', 'description', 'quantity','isMultiuse']
+
+class ProcLeaderSerializer(serializers.Serializer):
+    is_leader = serializers.BooleanField()
+    leader_host = serializers.CharField(max_length=255)
+
+class ProcInternalReqSerializer(serializers.Serializer):
+    leader_result = serializers.BooleanField()
+
+

@@ -29,6 +29,13 @@ ALLOWED_HOSTS = ['*']
 
 GRPC_PORT=50000
 
+REPLICAS = [
+    "http://localhost:8000",
+    "http://localhost:8001",
+    "http://localhost:8002",
+    "http://localhost:8003",
+]
+
 # Application definition
 
 INSTALLED_APPS = [

@@ -26,5 +26,9 @@ urlpatterns = [
 
     path('coupons/', views.CouponsAPIView.as_view()),
     path('vendors/', views.VendorsAPIView.as_view()),
+
+    path('proc/leader/', views.ProcLeaderAPIView.as_view()),
+    path('proc/leader/<str:pid>/', views.ProcLeaderReqAPIView.as_view()),
+
     path('admin/', admin.site.urls),
 ]
