@@ -7,8 +7,8 @@ from django.conf import settings
 
 leader_endpoint = "/proc/leader"
 
-leader_host = ""
-leader_id = -1
+leader_host = None
+leader = False
 
 def elect_leader(current_port, hosts=[]):
     """
@@ -22,9 +22,9 @@ def elect_leader(current_port, hosts=[]):
 
     print("\n\n**********Begin leader election**********")
 
-    global leader_host, leader_id
+    global leader_host, leader
     leader_host = ""
-    leader_id = -1
+    leader = False
 
     # fresh leader election start
     if len(hosts) == 0:
@@ -77,8 +77,8 @@ def elect_leader(current_port, hosts=[]):
 
     if len(hosts) == 0: # we are a leader
         print("Leader!")
-        leader_id = os.getpid()
         leader_host = f"http://localhost:{current_port}"
+        leader = True
 
     else: # we are not a leader
         print("Not a leader!")
@@ -101,8 +101,9 @@ def elect_leader(current_port, hosts=[]):
 
 
         leader_host = r["leader_host"]
+        leader = False
 
-        print(f"Got leader! host={leader_host}, pid={leader_id}")
+        print(f"Got leader! host={leader_host}")
 
     print("**********End leader election**********\n\n")
 
@@ -111,13 +112,13 @@ def elect_leader(current_port, hosts=[]):
 # checks if it is a leader. if no leader is assigned, it will begin
 # leader election
 def is_leader(current_port):
-    if leader_id == -1:
+    if leader_host == None:
         elect_leader(current_port)
 
-    return leader_id == os.getpid()
+    return leader
 
 def get_leader(current_port):
-    if leader_id == -1:
+    if leader_host == None:
         elect_leader(current_port)
     return leader_host
 

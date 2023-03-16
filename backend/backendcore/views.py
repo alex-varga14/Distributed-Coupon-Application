@@ -175,7 +175,7 @@ class ProcLeaderReqAPIView(APIView):
 
         result = proc.is_remote_pid_higher(int(pid))
 
-        data = vars(models.ProcInternalReq(leader_result=result))
+        data = vars(models.ProcInternalReq(result))
         serializer = serializers.ProcInternalReqSerializer(data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
