@@ -18,6 +18,57 @@ Due to the limited RAM size, 1GB of swap memory has been allocated. In the situa
 RAM is accidentally maxed out (noticable by having a frozen terminal and unresponsive HTTP requests), the server
 must be forcefully shutdown via the AWS console and started again.
 
+# Demo 3 Notes
+
+## Model
+The data model returned from the election process is as follows:
+
+```
+[ProcLeader]
+{
+    "is_leader": <Bool>,
+    "leader_host": <String>
+}
+```
+
+## Re-election process
+It is up to the front end to detect dead servers and perform a new leader election. A re-election can be requested
+by performing a `POST /proc/leader`. This returns a ProcLeader data model containing two values:
+* `is_leader` indicating whether the replica processing the request is determined to be a leader
+* `leader_host` indicating the host of the leader replica (in the format of `http://1.2.3.4:1234`).
+
+## Determining the leader
+
+To determine the leader, create a `GET /proc/leader` request to obtain a ProcLeader model. By default, if `GET /proc/leader`
+is requested with no active leader, it will automatically perform leader election.
+
+
+## Leader election implementation
+
+The leader (re-)election is done by creating a public endpoint `POST /proc/leader` to initiate the election with a non-public
+endpoint `GET /proc/leader/<id>` to compare process IDs. The process with the highest PID will win the election.
+
+The steps are as follows:
+
+Assuming `P` is the replica receiving a `POST` request, `pid` is the process ID of `P`, and `o_pid` is the
+process ID of other replicas (`pid` != `o_pid`), then, when `P` receives a `POST /proc/leader`,
+1. Send to all replicas (other than itself) a `GET /proc/leader/<id>`, where `<id>` is the current replica's PID
+2. Receive all responses with either a `YES` or a `NO`:
+    * `YES` indicates that the process **can** become a leader (`o_pid` &lt;= `pid`)
+    * `NO` indicates that the process **cannot** become a leader (`o_pid` &gt; `pid`)
+3. Filter the list of hosts, keeping only hosts that reject `P`'s request (in other words, we have a list of
+    hosts that responded `NO`
+4. Two cases:
+    * **Case 1** The filtered list is empty (no server replied with `NO`): `P` is the leader and returns a ProcLeader
+    * model of `{"is_leader": True, "leader_host": "1.2.3.4"}`
+    * **Case 2** The filtered list is non-empty (at least one server replied with `NO`): Create a `POST /proc/leader`
+    * request to the first server in the filtered list and pass in the filtered list as
+    a key-value pair of `{"host": "1.2.3.4,2.3.4.5,..."}`; `P` waits until this recursive call is finished, then returns
+    a ProcLeader model of `{"is_leader": False, "leader_host": "2.3.4.5"}`
+
+
+# Demo 2 Notes
+
 ## Setting up the application
 Some Python dependencies must be installed first prior to running the application.
 To install the dependencies, run
@@ -91,9 +142,9 @@ Docker instances can be listed by running `docker container ls -a`.
 
 There are a total of four services and four Docker instances that need to run.
 
-# Server modifications
+## Server modifications
 
-## Setting up a new DB
+### Setting up a new DB
 When setting up a new DB, the MySQL server may respond that the user is not allowed to access the DB. This is because
 the MySQL server only permits connections from localhost. This
 can be fixed by accessing the Docker instance with the command
