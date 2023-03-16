@@ -7,6 +7,9 @@ from rest_framework.views import APIView
 from backendcore import models, serializers
 from backendcore import dal
 from backendcore import proc
+from backendcore import utils
+
+import requests
 
 # Create your views here.
 
@@ -114,15 +117,34 @@ class VendorsAPIView(APIView):
 
 class ProcLeaderAPIView(APIView):
 
-
-    # GET /proc/leader
+    # GET /proc/leader?hosts=a,b,c
+    #
+    # initiates leader election with the given hosts, or attempt to connect
+    # to all if not given
     def get(self, request, *args, **kwargs):
-        proc.elect_leader(request.META["SERVER_PORT"])
-        pass
+        hosts = request.query_params.get("hosts", [])
+        if len(hosts) != 0:
+            hosts = requests.utils.unquote(hosts)
+            hosts = utils.fromBase64(hosts)
+            hosts = hosts.split(",")
+
+        # subsequent leadre eldctions will have hosts filled with IPs. for new
+        # elections, the hosts is empty.
+        (leader_id, leader_host) = proc.elect_leader(request.META["SERVER_PORT"], hosts)
+
+        data = vars(models.Proc(pid=leader_id, leader_host=leader_host))
+        serializer = serializers.ProcSerializer(data)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+
 
 class ProcLeaderReqAPIView(APIView):
 
     # GET /proc/leader/<req>
+    #
     # returns {"leader_result": False} if the 
     # remote process has a lower PID
     def get(self, request, *args, **kwargs):
@@ -135,9 +157,8 @@ class ProcLeaderReqAPIView(APIView):
         result = proc.is_remote_pid_higher(int(pid))
 
         data = vars(models.Proc(leader_result=result))
-        serializer = serializers.ProcSerializer(data)
+        serializer = serializers.ProcLeaderReqSerializer(data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 

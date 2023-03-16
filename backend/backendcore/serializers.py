@@ -19,6 +19,9 @@ class CouponSerializer(serializers.ModelSerializer):
 
 class ProcSerializer(serializers.Serializer):
     pid = serializers.IntegerField()
+    leader_host = serializers.CharField(max_length=255)
+
+class ProcLeaderReqSerializer(serializers.Serializer):
     leader_result = serializers.BooleanField()
 
 

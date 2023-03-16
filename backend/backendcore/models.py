@@ -38,8 +38,21 @@ class Coupon(models.Model):
 class Proc():
 
     def __init__(self, *args, **kwargs):
-        self.pid = kwargs.get("pid", -1)
-        self.leader_result = kwargs.get("leader_result", False)
+        pid = kwargs.get("pid", None)
+        leader_host = kwargs.get("leader_host", None)
+        leader_result = kwargs.get("leader_result", None)
+
+        if pid != None:
+            self.pid = pid
+
+        if leader_host != None:
+            self.leader_host = leader_host
+
+        if leader_result != None:
+            self.leader_result = leader_result
+
+
+
 
 
 
