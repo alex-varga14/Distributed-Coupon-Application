@@ -45,7 +45,8 @@ is requested with no active leader, it will automatically perform leader electio
 
 ## Leader election implementation
 
-The leader (re-)election is done by creating a public endpoint `POST /proc/leader` to initiate the election with a non-public
+The leader (re-)election is implemented using the Bully Algorithm.
+This is implemented by creating a public endpoint `POST /proc/leader` to initiate the election with a non-public
 endpoint `GET /proc/leader/<id>` to compare process IDs. The process with the highest PID will win the election.
 
 The steps are as follows:
@@ -54,18 +55,29 @@ Assuming `P` is the replica receiving a `POST` request, `pid` is the process ID 
 process ID of other replicas (`pid` != `o_pid`), then, when `P` receives a `POST /proc/leader`,
 1. Send to all replicas (other than itself) a `GET /proc/leader/<id>`, where `<id>` is the current replica's PID
 2. Receive all responses with either a `True` (YES) or a `False` (NO):
-    * `True` indicates that the process **can** become a leader (`o_pid` &lt;= `pid`)
-    * `False` indicates that the process **cannot** become a leader (`o_pid` &gt; `pid`)
+    * `True` indicates that the replica **can** become a leader (`o_pid` &lt;= `pid`)
+    * `False` indicates that the replica **cannot** become a leader (`o_pid` &gt; `pid`)
 3. Filter the list of hosts, keeping only hosts that reject `P`'s request (in other words, we have a list of
-    hosts that responded `NO`
+    hosts that responded `False`
 4. Two cases:
-    * **Case 1** The filtered list is empty (no server replied with `NO`): `P` is the leader and returns a ProcLeader
-    * model of `{"is_leader": True, "leader_host": "1.2.3.4"}`
-    * **Case 2** The filtered list is non-empty (at least one server replied with `NO`): Create a `POST /proc/leader`
-    * request to the first server in the filtered list and pass in the filtered list as
+    * **Case 1** - The filtered list is empty (no server replied with `NO`): `P` is the leader and returns a ProcLeader
+    model of `{"is_leader": True, "leader_host": "1.2.3.4"}`
+    * **Case 2** - The filtered list is non-empty (at least one server replied with `NO`): Create a `POST /proc/leader`
+    request to the first server in the filtered list and pass in the filtered list as
     a key-value pair of `{"host": "1.2.3.4,2.3.4.5,..."}`; `P` waits until this recursive call is finished, then returns
     a ProcLeader model of `{"is_leader": False, "leader_host": "2.3.4.5"}`
 
+## Issues with this approach
+
+There are few non-critical issues (specific to CPSC 559) with this approach:
+1. Concurrent leader election: the code is not handled to receive another `POST /proc/leader` request while an election is in progress
+    * Possible solution: implement a Python-equivalent C++ mutex in the function that performs the leader election.
+2. O(n^2) messages: in the worst-case scenario, we will have (n-1)(n-2)(...)(2)(1) `GET /proc/leader/<pid>` requests being made.
+    * Possible solution: modify the return type of `GET /proc/leader/<pid>` to also return the PID, and, instead of picking the
+        first host in the filtered list, pick the host with the highest PID; ultimately, this solution will give O(n) messages.
+3. O(n) active HTTP connections during (re-)election: each connection will wait for a response until all of the recursive election process
+        created are complete.
+    * Possible solution: by applying the solution in issue 2, the number of active connections reduces to O(1).
 
 # Demo 2 Notes
 
