@@ -34,7 +34,7 @@ The data model returned from the election process is as follows:
 ## Re-election process
 It is up to the front end to detect dead servers and perform a new leader election. A re-election can be requested
 by performing a `POST /proc/leader`. This returns a ProcLeader data model containing two values:
-* `is_leader` indicating whether the replica processing the request won itself as a leader
+* `is_leader` indicating whether the replica (that received the POST request) is a leader
 * `leader_host` containing the host of the leader replica (in the format of `http://1.2.3.4:1234`).
 
 ## Determining the leader
@@ -54,8 +54,8 @@ Assuming `P` is the replica receiving a `POST` request, `pid` is the process ID 
 process ID of other replicas (`pid` != `o_pid`), then, when `P` receives a `POST /proc/leader`,
 1. Send to all replicas (other than itself) a `GET /proc/leader/<id>`, where `<id>` is the current replica's PID
 2. Receive all responses with either a `True` (YES) or a `False` (NO):
-    * `YES` indicates that the process **can** become a leader (`o_pid` &lt;= `pid`)
-    * `NO` indicates that the process **cannot** become a leader (`o_pid` &gt; `pid`)
+    * `True` indicates that the process **can** become a leader (`o_pid` &lt;= `pid`)
+    * `False` indicates that the process **cannot** become a leader (`o_pid` &gt; `pid`)
 3. Filter the list of hosts, keeping only hosts that reject `P`'s request (in other words, we have a list of
     hosts that responded `NO`
 4. Two cases:
