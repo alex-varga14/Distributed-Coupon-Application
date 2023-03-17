@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ['*']
 
 GRPC_PORT=50000
 
+HOST = "localhost"
+
 REPLICAS = [
     "http://localhost:8000",
     "http://localhost:8001",

@@ -1,5 +1,7 @@
 from backendapp.settings import *
 
+HOST = "3.144.123.146"
+
 REPLICAS = [
     "http://3.144.123.146:8000",
     "http://3.144.123.146:8001",
