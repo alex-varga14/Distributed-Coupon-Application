@@ -5,6 +5,7 @@ class Coupon {
   String title = "null";
   String description = "null";
   bool isMultiuse = false;
+  int quantity = 0;
 
   Coupon();
 
@@ -15,10 +16,11 @@ class Coupon {
     required this.title,
     required this.description,
     required this.isMultiuse,
+    required this.quantity
   });
 
   @override
   String toString() {
-    return "{id: $id, vendorID: $vendorID, expiryDate: $expiryDate, title: $title, description: $description, isMultiuse: $isMultiuse}";
+    return "{id: $id, vendorID: $vendorID, expiryDate: $expiryDate, title: $title, description: $description, isMultiuse: $isMultiuse, quantity: $quantity}";
   }
 }
