@@ -8,8 +8,8 @@ import 'package:result_type/result_type.dart';
 class CouponAPI extends HttpService {
   @override
   Future<String> baseUrl() async {
-    String url1 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons/"; //main AWS Gateway
-    String url2 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons/"; //replica AWS Gateway
+    String url1 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons/"; //main AWS Gateway
+    String url2 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons/"; //replica AWS Gateway
 
     //Assume at least 1 of the urls will be alive always
     var isUrl1Alive = await isUrlAlive(url1);
@@ -29,6 +29,7 @@ class CouponAPI extends HttpService {
       c.title = map["title"];
       c.description = map["description"];
       c.isMultiuse = (map["isMultiuse"] == 0) ? false : true;
+      c.quantity = (map["quantity"]);
 
       return c as T;
 
@@ -42,6 +43,7 @@ class CouponAPI extends HttpService {
         c.title = map["title"];
         c.description = map["description"];
         c.isMultiuse = (map["isMultiuse"] == 0) ? false : true;
+        c.quantity = (map["quantity"]);
 
         return c;
       }).toList(growable: false) as T;
@@ -78,7 +80,8 @@ class CouponAPI extends HttpService {
         "title": coupon.title,
         "description": coupon.description,
         "name": "what is the name?", // TODO
-        "isMultiuse": coupon.isMultiuse
+        "isMultiuse": coupon.isMultiuse,
+        "quantity" : coupon.quantity
       }
       );
   }
