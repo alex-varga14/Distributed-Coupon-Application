@@ -54,7 +54,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: 40,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 102, 194, 212),
+                      backgroundColor: Color.fromARGB(255, 93, 175, 191),
                       foregroundColor: Colors.white),
                   onPressed: () async {
                     Navigator.push(
@@ -75,7 +75,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: 40,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 102, 194, 212),
+                      backgroundColor: Color.fromARGB(255, 93, 175, 191),
                       foregroundColor: Colors.white),
                   onPressed: () async {
                     Navigator.push(

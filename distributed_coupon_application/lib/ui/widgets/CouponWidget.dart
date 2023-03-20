@@ -31,8 +31,10 @@ class _CouponWidgetState extends State<CouponWidget> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue[100],
-          border: Border.all(color: Colors.black),
+          //color: const Color.fromARGB(125, 100, 189, 207),
+          border: Border.all(
+              color: const Color.fromARGB(255, 93, 175, 191), width: 2),
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -41,17 +43,10 @@ class _CouponWidgetState extends State<CouponWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  widget.couponVendor.vendorName,
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 20,
-                  ),
-                ),
-                Text(
                   widget.coupon.title,
                   style: GoogleFonts.roboto(
                     fontWeight: FontWeight.normal,
-                    fontSize: 18,
+                    fontSize: 24,
                   ),
                 ),
                 Text(
