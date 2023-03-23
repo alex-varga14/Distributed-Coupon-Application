@@ -1,4 +1,3 @@
-import 'package:distributed_coupon_application/pages/VendorRegisterPage.dart';
 import 'package:distributed_coupon_application/vm/createcouponpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -27,7 +26,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome, vendor!'),
+        title: const Text("Create a coupon"),
       ),
       body: SafeArea(
         child: Padding(
@@ -35,32 +34,11 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  child: const Text('Register as Vendor'),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const VendorRegisterPage()));
-                  },
-                ),
-              ),
-              Center(
-                child: Text(
-                  'Create a coupon',
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
               const Center(
                 child: Icon(
                   Icons.card_giftcard_rounded,
                   color: Color.fromARGB(255, 102, 194, 212),
-                  size: 50,
+                  size: 100,
                 ),
               ),
               const SizedBox(height: spacing),
@@ -115,6 +93,18 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                     contentPadding: EdgeInsets.all(8),
                     border: OutlineInputBorder(),
                     hintText: 'Coupon Description',
+                  ),
+                ),
+              ),
+              const SizedBox(height: spacing),
+              SizedBox(
+                height: 40,
+                child: TextFormField(
+                  onChanged: (value) => coupon.description = value,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    border: OutlineInputBorder(),
+                    hintText: 'Coupon Quantity',
                   ),
                 ),
               ),

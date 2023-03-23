@@ -1,4 +1,4 @@
-import 'package:distributed_coupon_application/pages/CouponFeedPage.dart';
+import 'package:distributed_coupon_application/pages/WelcomePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,9 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CouponFeedPage(),
+      home: const WelcomePage(),
+      theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromARGB(255, 234, 229, 229),
+          primaryColor: const Color.fromARGB(255, 93, 175, 191),
+          appBarTheme:
+              const AppBarTheme(color: Color.fromARGB(255, 93, 175, 191))),
     );
   }
 }

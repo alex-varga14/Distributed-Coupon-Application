@@ -37,7 +37,7 @@ class _RedeemCouponPageState extends State<RedeemCouponPage> {
               height: 20,
             ),
             Text(
-              "Show code to the cashier to redeem",
+              "Show code to cashier to redeem",
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.normal,
                 fontSize: 18,

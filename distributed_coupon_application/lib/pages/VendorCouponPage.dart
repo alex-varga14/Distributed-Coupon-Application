@@ -1,28 +1,46 @@
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/model/vendor.dart';
+import 'package:distributed_coupon_application/pages/CreateCouponPage.dart';
 import 'package:distributed_coupon_application/ui/widgets/CouponWidget.dart';
 import 'package:distributed_coupon_application/vm/couponfeedpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../util/pair.dart';
+import 'QrSystem/ScanQrCodePage.dart';
 
-class CouponFeedPage extends StatefulWidget {
-  const CouponFeedPage({Key? key}) : super(key: key);
+class VendorCouponPage extends StatefulWidget {
+  const VendorCouponPage({Key? key}) : super(key: key);
 
   @override
-  State<CouponFeedPage> createState() => _CouponFeedPageState();
+  State<VendorCouponPage> createState() => _VendorCouponPageState();
 }
 
-class _CouponFeedPageState extends State<CouponFeedPage> {
-  CouponFeedPageVM vm = CouponFeedPageVM();
+class _VendorCouponPageState extends State<VendorCouponPage> {
+  //CouponFeedPageVM vm = CouponFeedPageVM();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome, savers!'),
+        title: const Text('Welcome, vendor!'),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.qr_code_scanner,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              PermissionStatus status = await _getCameraPermission();
+              if (status.isGranted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScanQrCodePage()));
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(
               Icons.sort,
@@ -32,10 +50,19 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
               //TODO
             },
           ),
+          IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateCouponPage()));
+              }),
         ],
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
+      //body: SafeArea(
+      /*
           child: FutureBuilder<List<Pair<Coupon, Vendor>>>(
               future: vm.getData(),
               builder: (BuildContext context,
@@ -47,11 +74,10 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
                               Row(children: [
                                 const Icon(Icons.business,
                                     color: Colors.black, size: 20),
-                                const SizedBox(width: 10),
                                 Text(
                                   elem.second.vendorName,
                                   style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.normal,
                                       fontSize: 20),
                                 ),
                               ]),
@@ -62,7 +88,17 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
                             ])
                         .expand((element) => element)
                         .toList());
-              }),),
+              })*/ //),
     );
+  }
+
+  Future<PermissionStatus> _getCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+      final result = await Permission.camera.request();
+      return result;
+    } else {
+      return status;
+    }
   }
 }

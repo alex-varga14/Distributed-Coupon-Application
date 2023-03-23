@@ -3,20 +3,20 @@ import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../pages/CouponDetailPage.dart';
+import 'CouponDetailWidget.dart';
 
-class CouponWidget extends StatefulWidget {
+class VendorProfileWidget extends StatefulWidget {
   final Coupon coupon;
   final Vendor couponVendor;
 
-  const CouponWidget(
+  const VendorProfileWidget(
       {super.key, required this.coupon, required this.couponVendor});
 
   @override
-  State<CouponWidget> createState() => _CouponWidgetState();
+  State<VendorProfileWidget> createState() => _VendorProfileWidgetState();
 }
 
-class _CouponWidgetState extends State<CouponWidget> {
+class _VendorProfileWidgetState extends State<VendorProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,23 +24,23 @@ class _CouponWidgetState extends State<CouponWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CouponDetailPage(
+            builder: (context) => CouponDetailWidget(
                 coupon: widget.coupon, couponVendor: widget.couponVendor),
           ),
         ),
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 241, 237, 237),
-          //border:
-          //Border.all(color: Color.fromARGB(120, 93, 175, 191), width: 2),
+          color: Color.fromARGB(150, 93, 175, 191),
+          border:
+              Border.all(color: Color.fromARGB(120, 93, 175, 191), width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.7),
               spreadRadius: 5,
               blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
+              offset: Offset(0, 3), // changes position of shadow
             ),
           ],
         ),
@@ -53,7 +53,7 @@ class _CouponWidgetState extends State<CouponWidget> {
                 Text(
                   widget.coupon.title,
                   style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     fontSize: 24,
                   ),
                 ),

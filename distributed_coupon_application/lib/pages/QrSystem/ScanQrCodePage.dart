@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -25,7 +23,6 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text("Scan coupon QR code"),
       ),
@@ -45,9 +42,14 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
               height: 200,
               width: 200,
               child: CustomPaint(
-                painter: MyCustomPainter(frameSFactor: .1, padding: 30),
+                painter: MyCustomPainter(
+                  frameSFactor: .1,
+                  padding: 30,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
+            
           ],
         );
       }),
@@ -61,7 +63,6 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
       _screenOpened = true;
 
       //TODO handle invalid qr code like one that doesnt result in int
-     
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -87,7 +88,7 @@ class ScannerOverlay extends CustomPainter {
     final backgroundPaint = Paint()
       ..color = Colors.black.withOpacity(0.5)
       ..style = PaintingStyle.fill
-      ..blendMode = BlendMode.dstOut;
+      ..blendMode = BlendMode.darken;
 
     final backgroundWithCutout = Path.combine(
       PathOperation.difference,
@@ -103,21 +104,23 @@ class ScannerOverlay extends CustomPainter {
   }
 }
 
-//Class used to draw 4 blue border corners
+//Class used to draw 4 border corners
 class MyCustomPainter extends CustomPainter {
   final double padding;
   final double frameSFactor;
+  final Color color;
 
   MyCustomPainter({
     required this.padding,
     required this.frameSFactor,
+    required this.color,
   });
   @override
   void paint(Canvas canvas, Size size) {
     final frameHWidth = size.width * frameSFactor;
 
     Paint paint = Paint()
-      ..color = Colors.blue
+      ..color = color
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.fill
       ..strokeWidth = 4;
