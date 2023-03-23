@@ -23,7 +23,8 @@ class _VendorRegisterPageState extends State<VendorRegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register new Vendor'),
+        title: const Text('Register as a Vendor'),
+        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),

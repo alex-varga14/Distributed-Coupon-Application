@@ -5,18 +5,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'CouponDetailWidget.dart';
 
-class CouponWidget extends StatefulWidget {
+class VendorProfileWidget extends StatefulWidget {
   final Coupon coupon;
   final Vendor couponVendor;
 
-  const CouponWidget(
+  const VendorProfileWidget(
       {super.key, required this.coupon, required this.couponVendor});
 
   @override
-  State<CouponWidget> createState() => _CouponWidgetState();
+  State<VendorProfileWidget> createState() => _VendorProfileWidgetState();
 }
 
-class _CouponWidgetState extends State<CouponWidget> {
+class _VendorProfileWidgetState extends State<VendorProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -31,9 +31,9 @@ class _CouponWidgetState extends State<CouponWidget> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 241, 237, 237),
-          //border:
-          //Border.all(color: Color.fromARGB(120, 93, 175, 191), width: 2),
+          color: Color.fromARGB(150, 93, 175, 191),
+          border:
+              Border.all(color: Color.fromARGB(120, 93, 175, 191), width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(12)),
           boxShadow: [
             BoxShadow(
@@ -53,7 +53,7 @@ class _CouponWidgetState extends State<CouponWidget> {
                 Text(
                   widget.coupon.title,
                   style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     fontSize: 24,
                   ),
                 ),

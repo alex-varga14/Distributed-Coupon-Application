@@ -21,9 +21,10 @@ class _CouponDetailWidgetState extends State<CouponDetailWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 239, 237, 237),
       appBar: AppBar(
-        title: const Text('Coupon detail'),
-      ),
+          title: const Text('Coupon detail'),
+          backgroundColor: Color.fromARGB(255, 93, 175, 191)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -33,14 +34,14 @@ class _CouponDetailWidgetState extends State<CouponDetailWidget> {
                 widget.couponVendor.vendorName,
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.normal,
-                  fontSize: 25,
+                  fontSize: 20,
                 ),
               ),
               Text(
                 widget.coupon.title,
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.normal,
-                  fontSize: 20,
+                  fontSize: 28,
                 ),
               ),
               Text(
@@ -61,18 +62,26 @@ class _CouponDetailWidgetState extends State<CouponDetailWidget> {
                 widget.coupon.description,
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.normal,
-                  fontSize: 18,
+                  fontSize: 20,
                 ),
               ),
-              TextButton(
-                onPressed: () => {
-                  //TODO - implement redeem button
-                },
-                child: Text(
-                  'Redeem',
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 25,
+              const SizedBox(height: 20),
+              SizedBox(
+                width: 160,
+                height: 40,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 93, 175, 191),
+                      foregroundColor: Colors.white),
+                  onPressed: () => {
+                    // TODO - implement redeem button
+                  },
+                  child: Text(
+                    'Redeem',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 24,
+                    ),
                   ),
                 ),
               ),

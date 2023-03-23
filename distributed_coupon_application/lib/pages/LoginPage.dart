@@ -1,3 +1,5 @@
+import 'package:distributed_coupon_application/pages/VendorRegisterPage.dart';
+import 'package:distributed_coupon_application/pages/VendorCouponPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,6 +14,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
@@ -27,15 +32,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 10),
               Text(
-                'Find great discounts!',
-                style: GoogleFonts.roboto(
-                  letterSpacing: 0.5,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
                 'Welcome back.',
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.normal,
@@ -43,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 50),
+              SizedBox(height: 30),
 
               //Email input
               Padding(
@@ -115,8 +111,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
-                  onPressed: () {
-                    //TODO action for sign in
+                  onPressed: () async {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const VendorCouponPage()));
                   },
                   child: Text(
                     'SIGN IN',
@@ -136,18 +135,28 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Not a member?',
+                    'Not a registered vendor?',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
                   ),
-                  Text(
-                    ' Sign up!',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.lightBlue,
-                      fontSize: 14,
+                  TextButton(
+                    style:
+                        TextButton.styleFrom(foregroundColor: Colors.lightBlue),
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const VendorRegisterPage()));
+                    },
+                    child: Text(
+                      'Sign up!',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ],
