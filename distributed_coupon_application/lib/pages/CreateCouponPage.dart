@@ -27,7 +27,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome, vendor!'),
+        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
       ),
       body: SafeArea(
         child: Padding(
@@ -35,18 +35,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  child: const Text('Register as Vendor'),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const VendorRegisterPage()));
-                  },
-                ),
-              ),
               Center(
                 child: Text(
                   'Create a coupon',
@@ -115,6 +103,18 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                     contentPadding: EdgeInsets.all(8),
                     border: OutlineInputBorder(),
                     hintText: 'Coupon Description',
+                  ),
+                ),
+              ),
+              const SizedBox(height: spacing),
+              SizedBox(
+                height: 40,
+                child: TextFormField(
+                  onChanged: (value) => coupon.description = value,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    border: OutlineInputBorder(),
+                    hintText: 'Coupon Quantity',
                   ),
                 ),
               ),

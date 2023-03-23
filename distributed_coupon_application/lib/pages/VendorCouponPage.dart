@@ -8,22 +8,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../util/pair.dart';
 
-class CouponFeedPage extends StatefulWidget {
-  const CouponFeedPage({Key? key}) : super(key: key);
+class VendorCouponPage extends StatefulWidget {
+  const VendorCouponPage({Key? key}) : super(key: key);
 
   @override
-  State<CouponFeedPage> createState() => _CouponFeedPageState();
+  State<VendorCouponPage> createState() => _VendorCouponPageState();
 }
 
-class _CouponFeedPageState extends State<CouponFeedPage> {
-  CouponFeedPageVM vm = CouponFeedPageVM();
+class _VendorCouponPageState extends State<VendorCouponPage> {
+  //CouponFeedPageVM vm = CouponFeedPageVM();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 234, 229, 229),
+      backgroundColor: const Color.fromARGB(255, 239, 237, 237),
       appBar: AppBar(
-        title: const Text('Welcome, savers!'),
+        title: const Text('Welcome, vendor!'),
         backgroundColor: const Color.fromARGB(255, 93, 175, 191),
         actions: <Widget>[
           IconButton(
@@ -35,10 +35,19 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
               //TODO
             },
           ),
+          IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateCouponPage()));
+              }),
         ],
       ),
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
+      //body: SafeArea(
+      /*
           child: FutureBuilder<List<Pair<Coupon, Vendor>>>(
               future: vm.getData(),
               builder: (BuildContext context,
@@ -50,11 +59,10 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
                               Row(children: [
                                 const Icon(Icons.business,
                                     color: Colors.black, size: 20),
-                                SizedBox(width: 10),
                                 Text(
                                   elem.second.vendorName,
                                   style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.normal,
                                       fontSize: 20),
                                 ),
                               ]),
@@ -65,7 +73,7 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
                             ])
                         .expand((element) => element)
                         .toList());
-              })),
+              })*/ //),
     );
   }
 }

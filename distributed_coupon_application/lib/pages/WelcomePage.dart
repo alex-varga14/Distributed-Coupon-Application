@@ -24,8 +24,9 @@ class _WelcomePageState extends State<WelcomePage> {
           padding: const EdgeInsets.all(10.0),
           child: Center(
               child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(height: 80),
               Text(
                 'Distributed Coupon Application',
                 textAlign: TextAlign.center,
@@ -48,7 +49,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   fontSize: 24,
                 ),
               ),
-              Spacer(flex: 1),
+              SizedBox(height: 16),
+
+              //Spacer(flex: 1),
               SizedBox(
                 width: 160,
                 height: 40,
@@ -69,7 +72,8 @@ class _WelcomePageState extends State<WelcomePage> {
                       )),
                 ),
               ),
-              Spacer(flex: 1),
+              SizedBox(height: 16),
+              //Spacer(flex: 1),
               SizedBox(
                 width: 160,
                 height: 40,
@@ -92,7 +96,8 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ),
               ),
-              Spacer(flex: 10),
+              SizedBox(height: 20),
+              //Spacer(flex: 10),
             ],
           )),
         ),
