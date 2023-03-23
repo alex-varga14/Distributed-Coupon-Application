@@ -3,7 +3,7 @@ import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'CouponDetailWidget.dart';
+import '../../pages/CouponDetailPage.dart';
 
 class CouponWidget extends StatefulWidget {
   final Coupon coupon;
@@ -24,7 +24,7 @@ class _CouponWidgetState extends State<CouponWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CouponDetailWidget(
+            builder: (context) => CouponDetailPage(
                 coupon: widget.coupon, couponVendor: widget.couponVendor),
           ),
         ),

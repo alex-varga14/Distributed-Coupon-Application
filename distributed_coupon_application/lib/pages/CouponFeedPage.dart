@@ -1,9 +1,11 @@
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:distributed_coupon_application/pages/CreateCouponPage.dart';
+import 'package:distributed_coupon_application/pages/QrSystem/ScanQrCodePage.dart';
 import 'package:distributed_coupon_application/ui/widgets/CouponWidget.dart';
 import 'package:distributed_coupon_application/vm/couponfeedpage_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../util/pair.dart';
 
@@ -15,7 +17,6 @@ class CouponFeedPage extends StatefulWidget {
 }
 
 class _CouponFeedPageState extends State<CouponFeedPage> {
-
   CouponFeedPageVM vm = CouponFeedPageVM();
 
   @override
@@ -24,6 +25,21 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
       appBar: AppBar(
         title: const Text('Welcome, savers!'),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.qr_code_scanner,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              PermissionStatus status = await _getCameraPermission();
+              if (status.isGranted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScanQrCodePage()));
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(
               Icons.sort,
@@ -49,20 +65,31 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
       body: SafeArea(
         child: FutureBuilder<List<Pair<Coupon, Vendor>>>(
           future: vm.getData(),
-          builder: (BuildContext context, AsyncSnapshot<List<Pair<Coupon, Vendor>>> snapshot) {
+          builder: (BuildContext context,
+              AsyncSnapshot<List<Pair<Coupon, Vendor>>> snapshot) {
             return ListView(
-              padding: const EdgeInsets.all(12),
-              children: (snapshot.data ?? [])
-                .map((elem) => [
-                    CouponWidget(coupon: elem.first, couponVendor: elem.second),
-                    const SizedBox(height: 10)
-                  ])
-                .expand((element) => element)
-                .toList()
-            );
-          }
-        )
+                padding: const EdgeInsets.all(12),
+                children: (snapshot.data ?? [])
+                    .map((elem) => [
+                          CouponWidget(
+                              coupon: elem.first, couponVendor: elem.second),
+                          const SizedBox(height: 10)
+                        ])
+                    .expand((element) => element)
+                    .toList());
+          },
+        ),
       ),
     );
+  }
+
+  Future<PermissionStatus> _getCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+      final result = await Permission.camera.request();
+      return result;
+    } else {
+      return status;
+    }
   }
 }
