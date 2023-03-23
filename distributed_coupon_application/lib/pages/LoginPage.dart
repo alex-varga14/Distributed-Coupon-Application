@@ -156,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        color: Theme.of(context).primaryColor
                       ),
                     ),
                   ),

@@ -49,8 +49,10 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: 40,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 93, 175, 191),
-                      foregroundColor: Colors.white),
+                    backgroundColor: Colors.blueGrey,
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                  ),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -59,9 +61,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   },
                   child: Text('Customer',
                       style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 24,
-                      )),
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18,
+                          color: Colors.white)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -70,8 +72,10 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: 40,
                 child: TextButton(
                   style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 93, 175, 191),
-                      foregroundColor: Colors.white),
+                    backgroundColor: Colors.blueGrey,
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                  ),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -81,8 +85,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   child: Text(
                     'Vendor',
                     style: GoogleFonts.roboto(
+                      fontSize: 18,
                       fontWeight: FontWeight.normal,
-                      fontSize: 24,
+                      color: Colors.white,
                     ),
                   ),
                 ),

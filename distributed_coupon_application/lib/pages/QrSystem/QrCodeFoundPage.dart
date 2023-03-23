@@ -24,16 +24,6 @@ class QrCodeFoundPage extends StatefulWidget {
 class _QrCodeFoundPageState extends State<QrCodeFoundPage> {
   QrCodeFoundPageVM vm = QrCodeFoundPageVM();
 
-  static const List<Color> _kDefaultRainbowColors = [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.green,
-    Colors.blue,
-    Colors.indigo,
-    Colors.purple,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +60,7 @@ class _QrCodeFoundPageState extends State<QrCodeFoundPage> {
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 25,
+                                color: Theme.of(context).primaryColor
                               ),
                             ),
                             onPressed: () {
@@ -86,8 +77,7 @@ class _QrCodeFoundPageState extends State<QrCodeFoundPage> {
                     );
                   } else {
                     return const LoadingIndicator(
-                      indicatorType: Indicator.ballPulse,
-                      colors: _kDefaultRainbowColors,
+                      indicatorType: Indicator.ballSpinFadeLoader,
                     );
                   }
                 },
