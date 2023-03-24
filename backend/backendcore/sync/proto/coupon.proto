@@ -10,5 +10,7 @@ message Coupon {
     string description = 5;
     int32 quantity = 6;
     bool isMultiuse = 7;
+    float lat = 8;
+    float long = 9;
 }
 

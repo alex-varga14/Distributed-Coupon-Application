@@ -97,9 +97,11 @@ class CouponsAPIView(APIView):
         description = request.query_params.get("description")
         quantity = int(request.query_params.get("quantity"))
         isMultiuse = bool(request.query_params.get("isMultiuse"))
+        lat = float(request.query_params.get("lat"))
+        long = float(request.query_params.get("long"))
 
 
-        coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, True)
+        coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, lat, long, True)
         serializer = serializers.CouponSerializer(coupon)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

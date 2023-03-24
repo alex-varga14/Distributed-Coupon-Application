@@ -32,6 +32,9 @@ class Coupon(models.Model):
     quantity = models.IntegerField()
     isMultiuse = models.BooleanField(default=False)
 
+    lat = models.FloatField()
+    long = models.FloatField()
+
     def decrement_quantity(self):
         self.quantity = self.quantity - 1
 

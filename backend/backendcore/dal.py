@@ -5,7 +5,7 @@ from backendcore.sync import syncclient
 
 from django.conf import settings
 
-def createCoupon(idd, vendorId, expiryDate, title, description, quantity, isMultiuse, leader=False):
+def createCoupon(idd, vendorId, expiryDate, title, description, quantity, isMultiuse, lat, long, leader=False):
     coupon = models.Coupon(
         id=idd,
         vendorID=vendorId,
@@ -14,6 +14,8 @@ def createCoupon(idd, vendorId, expiryDate, title, description, quantity, isMult
         description=description,
         quantity=quantity,
         isMultiuse=isMultiuse,
+        lat=lat,
+        long=long
     )
 
     coupon.save()

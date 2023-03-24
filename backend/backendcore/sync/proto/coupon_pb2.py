@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63oupon.proto\x12\x06remote\"\x84\x01\n\x06\x43oupon\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08vendorID\x18\x02 \x01(\x05\x12\x12\n\nexpiryDate\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x10\n\x08quantity\x18\x06 \x01(\x05\x12\x12\n\nisMultiuse\x18\x07 \x01(\x08\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63oupon.proto\x12\x06remote\"\x9f\x01\n\x06\x43oupon\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08vendorID\x18\x02 \x01(\x05\x12\x12\n\nexpiryDate\x18\x03 \x01(\t\x12\r\n\x05title\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x10\n\x08quantity\x18\x06 \x01(\x05\x12\x12\n\nisMultiuse\x18\x07 \x01(\x08\x12\x0b\n\x03lat\x18\x08 \x01(\x02\x12\x0c\n\x04long\x18\t \x01(\x02\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'coupon_pb2', globals())
@@ -21,5 +21,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _COUPON._serialized_start=25
-  _COUPON._serialized_end=157
+  _COUPON._serialized_end=184
 # @@protoc_insertion_point(module_scope)
