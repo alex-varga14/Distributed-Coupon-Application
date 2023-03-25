@@ -1,5 +1,14 @@
 from backendapp.settings import *
 
+HOST = "3.144.123.146"
+
+REPLICAS = [
+    "http://3.144.123.146:8000",
+    "http://3.144.123.146:8001",
+    "http://3.144.123.146:8002",
+    "http://3.144.123.146:8003",
+]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

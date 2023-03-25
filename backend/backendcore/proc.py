@@ -77,7 +77,7 @@ def elect_leader(current_port, hosts=[]):
 
     if len(hosts) == 0: # we are a leader
         print("Leader!")
-        leader_host = f"http://localhost:{current_port}"
+        leader_host = f"http://{settings.HOST}:{current_port}"
         leader = True
 
     else: # we are not a leader
