@@ -5,8 +5,10 @@ import 'package:distributed_coupon_application/ui/widgets/CouponWidget.dart';
 import 'package:distributed_coupon_application/vm/couponfeedpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../util/pair.dart';
+import 'QrSystem/ScanQrCodePage.dart';
 
 class VendorCouponPage extends StatefulWidget {
   const VendorCouponPage({Key? key}) : super(key: key);
@@ -21,11 +23,24 @@ class _VendorCouponPageState extends State<VendorCouponPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 239, 237, 237),
       appBar: AppBar(
         title: const Text('Welcome, vendor!'),
-        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.qr_code_scanner,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              PermissionStatus status = await _getCameraPermission();
+              if (status.isGranted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScanQrCodePage()));
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(
               Icons.sort,
@@ -75,5 +90,15 @@ class _VendorCouponPageState extends State<VendorCouponPage> {
                         .toList());
               })*/ //),
     );
+  }
+
+  Future<PermissionStatus> _getCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (!status.isGranted) {
+      final result = await Permission.camera.request();
+      return result;
+    } else {
+      return status;
+    }
   }
 }

@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
+        title: const Text("Vendor sign-in"),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               //Open text
-              Icon(
+              const Icon(
                 Icons.card_giftcard_rounded,
                 color: Color.fromARGB(255, 102, 194, 212),
                 size: 120,
@@ -156,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        color: Theme.of(context).primaryColor
                       ),
                     ),
                   ),

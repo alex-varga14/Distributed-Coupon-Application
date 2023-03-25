@@ -24,7 +24,6 @@ class _VendorRegisterPageState extends State<VendorRegisterPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register as a Vendor'),
-        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
