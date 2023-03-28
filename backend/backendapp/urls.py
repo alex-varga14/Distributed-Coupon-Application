@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from backendcore import views
+from backendcore.views import UserRecordView, ProfileViewSet
+
+
 
 urlpatterns = [
     path('placeholder/', views.PlaceholderAPIView.as_view()),
@@ -31,4 +34,13 @@ urlpatterns = [
     path('proc/leader/<str:pid>/', views.ProcLeaderReqAPIView.as_view()),
 
     path('admin/', admin.site.urls),
+
+    #user
+    path('user/', UserRecordView.as_view(), name='users'),
+
+    path('api/', include('api.urls', namespace='api')),
+    path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+
+    path('profiles/', ProfileViewSet.as_view({'get': 'list', 'post': 'create'}), name='profile-list'),
+    path('profiles/<int:pk>/', ProfileViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name='profile-detail'),
 ]

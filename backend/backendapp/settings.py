@@ -40,6 +40,8 @@ REPLICAS = [
 
 INSTALLED_APPS = [
     'rest_framework',
+    #user related
+    'rest_framework.authtoken',
     'django_grpc_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -87,7 +89,16 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
-    ]
+    ],
+
+
+    #user related 
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 # Database
