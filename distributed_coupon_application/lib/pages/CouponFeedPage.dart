@@ -27,29 +27,25 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
       appBar: AppBar(
         title: const Text('Welcome, savers!'),
         actions: <Widget>[
-          Visibility(
-            visible: couponsList != null,
-            child: IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              onPressed: () async {
-                if (couponsList != null) {
-                  List<Pair<Coupon, Vendor>> coupons =
-                      List.empty(growable: true);
-                  for (var coupon in couponsList ?? []) {
-                    coupons.add(coupon);
-                  }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchPage(
-                                coupons: coupons,
-                              )));
-                }
-              },
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Colors.white,
             ),
+            onPressed: () async {
+              if (couponsList != null) {
+                List<Pair<Coupon, Vendor>> coupons = List.empty(growable: true);
+                for (var coupon in couponsList ?? []) {
+                  coupons.add(coupon);
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchPage(
+                              coupons: coupons,
+                            )));
+              }
+            },
           ),
         ],
       ),
@@ -61,6 +57,7 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
               AsyncSnapshot<List<Pair<Coupon, Vendor>>> snapshot) {
             couponsList = snapshot.data;
             if (couponsList != null) {
+              allowSearch = true;
               return ListView(
                   padding: const EdgeInsets.all(12),
                   children: (snapshot.data ?? [])
