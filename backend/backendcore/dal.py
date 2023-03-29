@@ -49,7 +49,7 @@ def _mode_to_km(mode):
 
 
 def getCouponsInRange(lat, long, mode):
-    bounds = geolocation.getBounds(_mode_to_km(mode))
+    bounds = geolocation.getBounds(lat, long, _mode_to_km(mode))
 
     return models.Coupons.objects \
         .filter(

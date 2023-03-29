@@ -81,7 +81,14 @@ class CouponsAPIView(APIView):
         name = request.query_params.get("name")
         isMultiuse = request.query_params.get("isMultiuse")
 
-        coupons = dal.getCoupons(idd, vendorId, expiryDate, title, description, name, isMultiuse)
+        lat = request.query_params.get("lat", None)
+        long = request.query_params.get("long", None)
+        mode = request.query_params.get("distance", None)
+
+        if lat == None or long == None or mode == None:
+            coupons = dal.getCoupons(idd, vendorId, expiryDate, title, description, name, isMultiuse)
+        else:
+            coupons = dal.getCouponsInRange(float(lat), float(long), int(mode))
         serializer = serializers.CouponSerializer(coupons, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
