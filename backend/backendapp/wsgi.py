@@ -35,7 +35,6 @@ from backendcore.sync import syncserver
 syncserver.serve()
 
 print('CONSISTENCY CHECK')
-print(sys.argv[2])
 i1 = False
 i2 = False
 i3 = False
@@ -54,39 +53,24 @@ elif sys.argv[2] == "0.0.0.0:8003":
     param = ssm.get_parameter(Name='/instance-4/last-executed-query', WithDecryption=True)
 print(param['Parameter']['Value'])
 
-
-#inputfile = open('/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log')
 found = False
 #j = 0
 old_op = ""
 ts_pattern = re.compile("(?P<date>\d{4}[-]?\d{1,2}[-]?\d{1,2} \d{1,2}:\d{1,2}:\d{1,2})")
-#for i, line in enumerate(open('/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log')):
 for i, line in enumerate(open('/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log')):
     for match in re.finditer(ts_pattern, line):
         if(match.group() == param['Parameter']['Value']):
             print('Last EXECUTED Timestamp Found')
             found = True
     if(found):
-        print('Found missing operation on line %s: %s' % (i+1, match.group()))
-        print(line)
+        #print('Found missing operation on line %s: %s' % (i+1, match.group()))
         op = re.search("INSERT\s+INTO\s+`?(\w+)`?\s*\(([^)]+)\)\s*VALUES\s*\(([^)]+)\);", line)
         if(op):
-            print('FOUND INSERT OP - ' + op.group())
-#            print(op.group(1))
-#            print(op.group(2))
-#            print(op.group(3))
-            #old_op = op.group()
-           # j = 0
-            #models.Vendor.objects.raw(op.group())
-           # if(j < 1):
             cursor = connection.cursor()
             cursor.execute("INSERT IGNORE INTO `" + op.group(1) + "` (" + op.group(2) + ") VALUES (" + op.group(3) + ");")
-            #cursor.execute("INSERT INTO `" + op.group(1) + "` (" + op.group(2) + ") SELECT " + op.group(3) + " FROM DUAL WHERE NOT EXISTS(SELECT NUL>
-#   j = j + 1
-                #execute all queries against respective database
-#txn_ts = str(datetime.fromtimestamp(time.time()))
+
 r = subprocess.run(['tail', '-1', '/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log'], stdout=subprocess.PIPE)
-#print('STR OUT' + str(r.stdout))
+
 txn = re.search("(?P<date>\d{4}[-]?\d{1,2}[-]?\d{1,2} \d{1,2}:\d{1,2}:\d{1,2})", str(r.stdout))
 print('LAST OPERATION - ' + txn.group())
 if(i1):
