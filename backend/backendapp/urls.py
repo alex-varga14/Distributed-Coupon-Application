@@ -31,4 +31,9 @@ urlpatterns = [
     path('proc/leader/<str:pid>/', views.ProcLeaderReqAPIView.as_view()),
 
     path('admin/', admin.site.urls),
+    path('', views.AliveAPIView.as_view()),
+
+    #sync
+    path('coupons/redeem/<str:id>/', views.CouponAcquireAPIView.as_view()),
+    path('coupons/back/<str:id>/', views.CouponReleaseAPIView.as_view()),
 ]

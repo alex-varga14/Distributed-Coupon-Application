@@ -104,6 +104,40 @@ DATABASES = {
     }
 }
 
+if DEBUG:
+    import logging
+    l = logging.getLogger('django.db.backends')
+    l.setLevel(logging.DEBUG)
+    l.addHandler(logging.StreamHandler())
+
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'timestamp': {
+            'format': '{asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'timestamp',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'timestamp',
+            'filename': '/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+    }
+}
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',

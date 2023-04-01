@@ -196,3 +196,16 @@ class ProcLeaderReqAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class AliveAPIView(APIView):
+    #GET / to test if replica is alive
+    def get(self, request, *args, **kwargs):
+        return Response(' ', status=status.HTTP_200_OK)
+
+class CouponAcquireAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response('Acquired lock', status=status.HTTP_200_OK)
+
+class CouponReleaseAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response('Released lock', status=status.HTTP_200_OK)
+
