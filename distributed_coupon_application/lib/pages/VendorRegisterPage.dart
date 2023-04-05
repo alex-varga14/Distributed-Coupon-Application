@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:result_type/result_type.dart';
 
 import '../model/vendor.dart';
@@ -100,8 +101,15 @@ class _VendorRegisterPageState extends State<VendorRegisterPage> {
                   shadowColor: Colors.grey.withOpacity(0.5),
                 ),
                 onPressed: () async {
-                  //TODO post vendor to database and display some confirmation window
+                  //loading dialog
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const LoadingIndicator(
+                          indicatorType: Indicator.ballSpinFadeLoader));
+
                   Result<bool, String> result = await vm.createVendor(vendor);
+
+                  Navigator.pop(context); //pops loading dialog
 
                   if (result.isSuccess && result.success) {
                     showDialog(
@@ -146,7 +154,7 @@ class _VendorRegisterPageState extends State<VendorRegisterPage> {
 
   Widget _buildSuccessPopupDialog(BuildContext context) {
     return AlertDialog(
-      title: const Text('Coupon created'),
+      title: const Text('Vendor created'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
