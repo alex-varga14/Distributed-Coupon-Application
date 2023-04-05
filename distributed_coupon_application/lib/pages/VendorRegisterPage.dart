@@ -146,7 +146,7 @@ class _VendorRegisterPageState extends State<VendorRegisterPage> {
 
   Widget _buildSuccessPopupDialog(BuildContext context) {
     return AlertDialog(
-      title: const Text('Coupon created'),
+      title: const Text('Vendor created'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
