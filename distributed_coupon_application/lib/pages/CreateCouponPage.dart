@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:result_type/result_type.dart';
 
 import '../model/coupon.dart';
@@ -137,7 +138,17 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
                   onPressed: () async {
+
+                    //loading dialog
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const LoadingIndicator(indicatorType: Indicator.ballSpinFadeLoader)
+                      );
+
                     Result<bool, String> result = await vm.createCoupon(coupon);
+
+                    Navigator.pop(context); //pops loading dialog
 
                     if (result.isSuccess && result.success) {
                       showDialog(
@@ -162,7 +173,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                         builder: (BuildContext context) =>
                             _buildErrorPopupDialog(context, message),
                       );
-                    }
+                    } 
                   },
                   child: Text(
                     'CREATE',
