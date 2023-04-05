@@ -12,7 +12,9 @@ abstract class HttpService {
 
   Future<Result<T, APIError>> postJson<T>(String endpoint, [Map<String, Object>? params]) async {
     String base_url =  await baseUrl();
-    var response = await http.post(Uri.parse(base_url + endpoint), body: jsonEncode(params));
+
+    Uri uri = Uri.https(Uri.parse(base_url).host, Uri.parse(base_url).path + endpoint, params);
+    var response = await http.post(uri);
 
     if (response.statusCode < 200 || response.statusCode > 299) {
       return Failure(APIError.HTTPError(response.statusCode, response.reasonPhrase));

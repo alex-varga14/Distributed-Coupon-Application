@@ -8,6 +8,12 @@ class CreateCouponPageVM {
   CouponDAL dal = CouponDAL();
 
   Future<Result<bool, String>> createCoupon(Coupon coupon) async {
+    if (coupon.quantity > 1) {
+      coupon.isMultiuse = true;
+    } else {
+      coupon.isMultiuse = false;
+    }
+
     Result<bool, RequestError> result = await dal.createCoupon(coupon);
 
     return result.mapError((error) {

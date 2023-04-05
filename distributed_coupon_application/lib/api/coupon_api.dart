@@ -8,8 +8,8 @@ import 'package:result_type/result_type.dart';
 class CouponAPI extends HttpService {
   @override
   Future<String> baseUrl() async {
-    String url1 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons/"; //main AWS Gateway
-    String url2 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons/"; //replica AWS Gateway
+    String url1 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons"; //main AWS Gateway
+    String url2 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons"; //replica AWS Gateway
 
     //Assume at least 1 of the urls will be alive always
     var isUrl1Alive = await isUrlAlive(url1);
@@ -75,13 +75,12 @@ class CouponAPI extends HttpService {
     return postJson<bool>(
       "/",
       {
-        "vendorID": coupon.vendorID,
+        "vendorID": coupon.vendorID.toString(),
         "expiryDate": coupon.expiryDate.toString(),
         "title": coupon.title,
         "description": coupon.description,
-        "name": "what is the name?", // TODO
-        "isMultiuse": coupon.isMultiuse,
-        "quantity" : coupon.quantity
+        "isMultiuse": coupon.isMultiuse.toString(),
+        "quantity" : coupon.quantity.toString()
       }
       );
   }
