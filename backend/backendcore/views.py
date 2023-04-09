@@ -96,7 +96,7 @@ class CouponsAPIView(APIView):
         title = request.query_params.get("title")
         description = request.query_params.get("description")
         quantity = int(request.query_params.get("quantity"))
-        isMultiuse = request.query_params.get("isMultiuse").lower() in ["true","1"]
+        isMultiuse = bool(request.query_params.get("isMultiuse")) #request.query_params.get("isMultiuse").lower() in ["true","1"]
 
 
         coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, True)
