@@ -4,6 +4,7 @@ import 'package:distributed_coupon_application/ui/widgets/CouponWidget.dart';
 import 'package:distributed_coupon_application/vm/couponfeedpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../util/pair.dart';
 
@@ -17,6 +18,9 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
+    // lazy code
+    Permission.locationWhenInUse.request();
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 237, 237),
       body: SafeArea(
