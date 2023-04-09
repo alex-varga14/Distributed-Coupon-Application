@@ -1,3 +1,4 @@
+import 'package:distributed_coupon_application/dal/location_dal.dart';
 import 'package:distributed_coupon_application/pages/LoginPage.dart';
 import 'package:distributed_coupon_application/pages/CouponFeedPage.dart';
 import 'package:distributed_coupon_application/ui/widgets/CouponWidget.dart';
@@ -16,10 +17,18 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+
+  void handleLocation() async {
+    // lazy code
+    LocationDAL dal = LocationDAL();
+    await Permission.locationWhenInUse.request();
+    await dal.getLocationAsync();
+    print("Location: ${dal.tryGetLocation()}");
+  }
+
   @override
   Widget build(BuildContext context) {
-    // lazy code
-    Permission.locationWhenInUse.request();
+    handleLocation();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 239, 237, 237),

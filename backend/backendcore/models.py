@@ -31,6 +31,8 @@ class Coupon(models.Model):
     description = models.TextField(max_length=150)
     quantity = models.IntegerField()
     isMultiuse = models.BooleanField(default=False)
+    lat = models.FloatField()
+    long = models.FloatField()
 
     lat = models.FloatField()
     long = models.FloatField()

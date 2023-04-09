@@ -1,7 +1,9 @@
 import 'package:distributed_coupon_application/api/coupon_api.dart';
+import 'package:distributed_coupon_application/dal/location_dal.dart';
 import 'package:distributed_coupon_application/model/api_error.dart';
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/model/RequestError.dart';
+import 'package:distributed_coupon_application/util/pair.dart';
 import 'package:result_type/result_type.dart';
 
 // DAL layer so we can possibly return cached results instead of always performing API calls
@@ -24,7 +26,7 @@ class CouponDAL {
     return (await api.getCoupon(id)).mapError(mapApiError);
   }
 
-  Future<Result<List<Coupon>, RequestError>> getAllCoupons() async {
+  Future<Result<List<Coupon>, RequestError>> getAllCoupons([Pair<double, double>? location]) async {
      //mock data
     // return Future.value(Success([
     //   Coupon.create(id: 1, vendorID: 1, expiryDate: DateTime(2023, 12, 23), title: "50% off everything", description: "Customers can get 50% off everything storewide. Excludes clearance items.", isMultiuse: false),
@@ -32,7 +34,7 @@ class CouponDAL {
     //   Coupon.create(id: 3, vendorID: 2, expiryDate: DateTime(2023, 6, 5), title: "Spend \$25, get \$5", description: "Spending \$25 before tax, and get \$5 to redeem on your next purchase.", isMultiuse: false),
     // ]));
 
-    return (await api.getAllCoupons()).mapError(mapApiError);
+    return (await api.getAllCoupons(location)).mapError(mapApiError);
   }
 
   Future<Result<bool, RequestError>> createCoupon(Coupon coupon) async {

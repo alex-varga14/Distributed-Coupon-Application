@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:distributed_coupon_application/model/api_error.dart';
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/service/http_service.dart';
+import 'package:distributed_coupon_application/util/pair.dart';
 import 'package:result_type/result_type.dart';
 
 class CouponAPI extends HttpService {
@@ -59,7 +60,10 @@ class CouponAPI extends HttpService {
     return get<Coupon>("/", {"id": id});
   }
 
-  Future<Result<List<Coupon>, APIError>> getAllCoupons() {
+  Future<Result<List<Coupon>, APIError>> getAllCoupons([Pair<double, double>? pos]) {
+    if (pos != null) {
+      return get<List<Coupon>>("/?lat=${pos.first}&long=${pos.second}");
+    }
     return get<List<Coupon>>("/");
   }
 
