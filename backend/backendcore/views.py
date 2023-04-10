@@ -9,6 +9,8 @@ from backendcore import dal
 from backendcore import proc
 from backendcore import utils
 
+from django.core.cache import cache
+
 import requests
 
 def port(request):
@@ -209,3 +211,31 @@ class CouponReleaseAPIView(APIView):
     def get(self, request, *args, **kwargs):
         return Response('Released lock', status=status.HTTP_200_OK)
 
+
+class CouponAcquireAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        id = kwargs["id"]
+        # attempt to acquire lock on coupon with ID
+        lock_acquired = cache.add('coupon_lock_{}'.format(id), 'locked', 120)
+        if not lock_acquired:
+            # lock already held by another user, return redirect
+            return Response("Coupon locked by another user!", status=status.HTTP_409_CONFLICT)
+        try:
+            # coupon locked now, redemption logic - TO DO: ADD DELETION IF NEEDED FOR FE
+            coupon = models.Coupon.objects.get(id)
+            coupon.is_redeemed = True
+            coupon.save()
+            return Response("Coupon redeemed successfully", status=status.HTTP_200_OK)
+        #finally:
+        except:
+            return Response("Coupon lock acquired!", status=status.HTTP_200_OK)
+
+class CouponReleaseAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        id = kwargs["id"]
+        #unlock coupon by cliking FE button to go back to aggregate coupon page which sends request to release
+        try:
+            cache.delete('coupon_lock_{}'.format(id))
+            return Response("Coupon Released!", status=status.HTTP_200_OK)
+        except:
+            return Response("ERROR: Request with Coupon ID not blocking", status=status.HTTP_404_NOT_FOUND)

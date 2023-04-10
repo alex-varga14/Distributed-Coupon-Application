@@ -64,8 +64,25 @@ There are few issues with this approach:
 1. All four instances operations are logged resulting in large overhead and therefore increased latency with time as well as inability to scale. Furthermore, in its current state, an issue that arises from this is that duplicate sql operations are ignored and not inserted into the table; however, these queries still trigger the auto increment property which results in gaps in id ranges when a replica reboots therefore inconsistency between row id's amongst the instances. TOFIX
 2. In the case all replicas go down, there is no recovery mechanism. Also, none in the case a database goes down.
 
+...
+
 ## Sync - Contention Over Coupon Access
-In order to manage concurrent access on coupons, a transaction manager is leveraged to acquire locks.
+In order to manage concurrent access on coupons, we use a django Redis cache to manage distributed locking across the four replicas. The Redis cache can be checked to see if a corresponding key exists when a user proceeds with redemption, if the key exists, it means the current coupon is locked and the user cannot redeem it. The Redis cache server is hosted on the EC2 instance at port 6379. To view the locking in action, one can access the servers redis cache as follows:
+
+```
+redis-cli -h 3.129.250.41
+```
+Once in redis console, one can view keys, ie all locked coupons, by using the following command:
+
+```
+KEYS *
+```
+For our system, we use the `myapp_cache:1:coupon_lock_{}` keys, where the last segment is the coupon ID. To view the key, or locked coupon, run (ex: where couponID = 1):
+
+```
+GET myapp_cache:1:coupon_lock_1
+```
+
 ...
 
 # Demo 3 Notes - Fault Tolerance

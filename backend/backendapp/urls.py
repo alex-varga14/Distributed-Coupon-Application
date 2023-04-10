@@ -34,6 +34,6 @@ urlpatterns = [
     path('', views.AliveAPIView.as_view()),
 
     #sync
-    path('coupons/redeem/<str:id>/', views.CouponAcquireAPIView.as_view()),
-    path('coupons/back/<str:id>/', views.CouponReleaseAPIView.as_view()),
+    path('coupons/acquire/<int:id>/', views.CouponAcquireAPIView.as_view()),
+    path('coupons/release/<int:id>/', views.CouponReleaseAPIView.as_view()),
 ]
