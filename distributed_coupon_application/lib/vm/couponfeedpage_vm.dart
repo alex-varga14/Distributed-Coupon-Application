@@ -1,15 +1,22 @@
 import 'package:distributed_coupon_application/dal/coupon_dal.dart';
+import 'package:distributed_coupon_application/dal/location_dal.dart';
 import 'package:distributed_coupon_application/dal/vendor_dal.dart';
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/model/RequestError.dart';
 import 'package:distributed_coupon_application/model/vendor.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:result_type/result_type.dart';
 
 import '../util/pair.dart';
 
 class CouponFeedPageVM {
+  int activeMode = 0;
+  List<int> rangeMode = [0, 1, 2, 3, 4, 5];
+  List<String> rangeString = ['1 km', '5 km', '10 km', '25 km', '50 km', '100 km'];
+
   CouponDAL couponDAL = CouponDAL();
   VendorDAL vendorDAL = VendorDAL();
+  LocationDAL locationDAL = LocationDAL();
 
   Future<int> getCouponCount() async {
     return (await couponDAL.getAllCoupons()).success.length;
@@ -24,7 +31,13 @@ class CouponFeedPageVM {
   }
 
   Future<List<Pair<Coupon, Vendor>>> getData() async {
-    Result<List<Coupon>, RequestError> couponsResult = await couponDAL.getAllCoupons();
+    Position? pos = locationDAL.tryGetLocation();
+    Pair<double, double>? posPair;
+    if (pos != null) {
+      posPair = Pair(pos.latitude, pos.longitude);
+    }
+
+    Result<List<Coupon>, RequestError> couponsResult = await couponDAL.getAllCoupons(posPair);
     Result<List<Vendor>, RequestError> vendorsResult = await vendorDAL.getAllVendors();
 
     if (couponsResult.isFailure || vendorsResult.isFailure) {

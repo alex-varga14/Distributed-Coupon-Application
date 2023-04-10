@@ -17,6 +17,11 @@ class CouponFeedPage extends StatefulWidget {
 
 class _CouponFeedPageState extends State<CouponFeedPage> {
   CouponFeedPageVM vm = CouponFeedPageVM();
+  int activeMode = 0;
+
+  _CouponFeedPageState() {
+    activeMode = vm.activeMode;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,33 +44,55 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-          child: FutureBuilder<List<Pair<Coupon, Vendor>>>(
-              future: vm.getData(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Pair<Coupon, Vendor>>> snapshot) {
-                return ListView(
-                    padding: const EdgeInsets.all(12),
-                    children: (snapshot.data ?? [])
-                        .map((elem) => [
-                              Row(children: [
-                                const Icon(Icons.business,
-                                    color: Colors.black, size: 20),
-                                SizedBox(width: 10),
-                                Text(
-                                  elem.second.vendorName,
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ]),
-                              CouponWidget(
-                                  coupon: elem.first,
-                                  couponVendor: elem.second),
-                              const SizedBox(height: 20)
-                            ])
-                        .expand((element) => element)
-                        .toList());
-              })),
+          child:
+          Column(children: [
+            Row(children: [
+              Expanded(child: Container()),
+              const Text("Range: "),
+              DropdownButton<String>(
+                value: vm.rangeString[activeMode],
+                items: vm.rangeMode.map((value) {
+                  return DropdownMenuItem(value: vm.rangeString[value], child: Text(vm.rangeString[value]));
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    vm.activeMode = vm.rangeString.indexOf(value!);
+                    activeMode = vm.activeMode;
+                  });
+                },
+              )
+            ]),
+            Expanded(
+              child: FutureBuilder<List<Pair<Coupon, Vendor>>>(
+                future: vm.getData(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<Pair<Coupon, Vendor>>> snapshot) {
+                  return ListView(
+                      padding: const EdgeInsets.all(12),
+                      children: (snapshot.data ?? [])
+                          .map((elem) => [
+                                Row(children: [
+                                  const Icon(Icons.business,
+                                      color: Colors.black, size: 20),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    elem.second.vendorName,
+                                    style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ]),
+                                CouponWidget(
+                                    coupon: elem.first,
+                                    couponVendor: elem.second),
+                                const SizedBox(height: 20)
+                              ])
+                          .expand((element) => element)
+                          .toList());
+                }),
+            )
+          ],)
+      )
     );
   }
 }
