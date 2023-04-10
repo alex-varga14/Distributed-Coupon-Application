@@ -14,7 +14,6 @@ abstract class HttpService {
     String base_url =  await baseUrl();
 
     Uri uri = Uri.https(Uri.parse(base_url).host, Uri.parse(base_url).path + endpoint, params);
-
     var response = await http.post(uri);
 
     if (response.statusCode < 200 || response.statusCode > 299) {
