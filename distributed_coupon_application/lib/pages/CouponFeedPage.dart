@@ -24,6 +24,7 @@ class _CouponFeedPageState extends State<CouponFeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 234, 229, 229),
       appBar: AppBar(
         title: const Text('Welcome, savers!'),
         actions: <Widget>[

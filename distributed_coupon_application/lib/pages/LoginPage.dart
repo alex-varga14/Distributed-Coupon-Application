@@ -1,7 +1,9 @@
 import 'package:distributed_coupon_application/pages/VendorRegisterPage.dart';
 import 'package:distributed_coupon_application/pages/VendorCouponPage.dart';
+import 'package:distributed_coupon_application/vm/loginpage_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:distributed_coupon_application/globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,6 +13,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginPageVM vm = new LoginPageVM();
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,25 +28,52 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: SingleChildScrollView(
             child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               //Open text
+              Text(
+                'Welcome back!',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                ),
+              ),
               const Icon(
                 Icons.card_giftcard_rounded,
                 color: Color.fromARGB(255, 102, 194, 212),
                 size: 120,
               ),
               SizedBox(height: 10),
-              Text(
-                'Welcome back.',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
+              //Email input
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35),
+                child: Container(
+                  constraints: BoxConstraints(minWidth: 150, maxWidth: 250),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 4,
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      )
+                    ],
+                    // borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: TextField(
+                        controller: controller,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Vendor ID',
+                        ),
+                        style: TextStyle(fontSize: 20)),
+                  ),
                 ),
               ),
-
-              SizedBox(height: 10),
-
-
+              SizedBox(height: 25),
               //Sign in
               Container(
                 constraints: const BoxConstraints(minWidth: 150, maxWidth: 250),
@@ -52,10 +84,17 @@ class _LoginPageState extends State<LoginPage> {
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
                   onPressed: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const VendorCouponPage()));
+                    if (updateId()) {
+                      bool result =
+                          await vm.checkForValidVendorId(globals.vendorID);
+                      if (result) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const VendorCouponPage()));
+                      }
+                    }
                   },
                   child: Text(
                     'ENTER PORTAL',
@@ -94,10 +133,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Sign up!',
                       style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Theme.of(context).primaryColor
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Theme.of(context).primaryColor),
                     ),
                   ),
                 ],
@@ -107,5 +145,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  bool updateId() {
+    if (int.tryParse(controller.text) != null) {
+      globals.vendorID = int.parse(controller.text);
+      return true;
+    }
+    return false;
   }
 }

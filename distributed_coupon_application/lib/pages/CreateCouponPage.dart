@@ -4,7 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:distributed_coupon_application/pages/VendorCouponPage.dart';
+
 import 'package:result_type/result_type.dart';
+import 'package:distributed_coupon_application/globals.dart' as globals;
 
 import '../model/coupon.dart';
 import '../model/vendor.dart';
@@ -41,33 +44,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   Icons.card_giftcard_rounded,
                   color: Color.fromARGB(255, 102, 194, 212),
                   size: 100,
-                ),
-              ),
-              const SizedBox(height: spacing),
-              Text(
-                'Vendor Information',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: spacing),
-              SizedBox(
-                height: 40,
-                child: TextField(
-                  onChanged: (value) {
-                    vendor.id = int.parse(value);
-                    coupon.vendorID = int.parse(value);
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(),
-                    hintText: 'Vendor ID',
-                  ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
                 ),
               ),
               const SizedBox(height: spacing),
@@ -138,13 +114,13 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
                   onPressed: () async {
-
+                    coupon.vendorID = globals.vendorID;
                     //loading dialog
                     showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            const LoadingIndicator(indicatorType: Indicator.ballSpinFadeLoader)
-                      );
+                            const LoadingIndicator(
+                                indicatorType: Indicator.ballSpinFadeLoader));
 
                     Result<bool, String> result = await vm.createCoupon(coupon);
 
@@ -173,7 +149,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                         builder: (BuildContext context) =>
                             _buildErrorPopupDialog(context, message),
                       );
-                    } 
+                    }
                   },
                   child: Text(
                     'CREATE',
@@ -249,6 +225,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
   }
 
   void _openCouponFeedPage() {
-    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const VendorCouponPage()));
   }
 }
