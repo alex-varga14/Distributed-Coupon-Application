@@ -38,4 +38,14 @@ class CouponDAL {
   Future<Result<bool, RequestError>> createCoupon(Coupon coupon) async {
     return (await api.postCoupon(coupon)).mapError(mapApiError);
   }
+
+  Future<Result<bool, RequestError>> redeemCoupon(int couponId) async
+  {
+    return (await api.redeemCoupon(couponId)).mapError(mapApiError);
+  }
+
+  Future<Result<bool, RequestError>> releaseCoupon(int couponId) async
+  {
+    return (await api.releaseCoupon(couponId)).mapError(mapApiError);
+  }
 }

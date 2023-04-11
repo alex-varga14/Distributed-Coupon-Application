@@ -58,18 +58,33 @@ class _QrCodeFoundPageState extends State<QrCodeFoundPage> {
                             child: Text(
                               'Confirm',
                               style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 25,
-                                color: Theme.of(context).primaryColor
-                              ),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 25,
+                                  color: Theme.of(context).primaryColor),
                             ),
-                            onPressed: () {
-                              //TODO implement redeem logic backend
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Not implemented yet'),
-                                ),
-                              );
+                            onPressed: () async {
+                              //Acquire lock and redeem, then release lock
+                              bool isSuccessRedeem =
+                                  await vm.redeemCoupon(widget.couponId);
+                              bool isSuccessReleaseLock =
+                                  await vm.releaseCoupon(widget.couponId);
+
+                              if (isSuccessRedeem && isSuccessReleaseLock) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Coupon has been redeemed!'),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('Coupon could NOT be redeemed'),
+                                  ),
+                                );
+                              }
+
+                              Navigator.of(context).pop();
                             },
                           ),
                         ],

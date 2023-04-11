@@ -1,5 +1,6 @@
 import 'package:distributed_coupon_application/dal/coupon_dal.dart';
 import 'package:distributed_coupon_application/dal/vendor_dal.dart';
+import 'package:distributed_coupon_application/model/api_error.dart';
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/model/RequestError.dart';
 import 'package:result_type/result_type.dart';
@@ -46,4 +47,29 @@ class QrCodeFoundPageVM {
 
     return Pair(coupon, vendor);
   }
+
+  Future<bool> redeemCoupon(int couponId) async
+  {
+    Result<bool,RequestError> redeemCouponResult = await couponDAL.redeemCoupon(couponId);
+
+    if (redeemCouponResult.isFailure) {
+      print("vm redeem coupon fail");
+      return false;
+    }
+
+    return redeemCouponResult.success;
+  }
+
+  Future<bool> releaseCoupon(int couponId) async
+  {
+    Result<bool,RequestError> releaseCouponResult = await couponDAL.releaseCoupon(couponId);
+
+    if (releaseCouponResult.isFailure) {
+      print("vm release coupon fail");
+      return false;
+    }
+
+    return releaseCouponResult.success;
+  }
+
 }

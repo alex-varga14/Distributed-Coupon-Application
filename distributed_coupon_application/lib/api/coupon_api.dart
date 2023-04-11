@@ -8,15 +8,17 @@ import 'package:result_type/result_type.dart';
 class CouponAPI extends HttpService {
   @override
   Future<String> baseUrl() async {
-    String url1 = "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons"; //main AWS Gateway
-    String url2 = "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons"; //replica AWS Gateway
+    String url1 =
+        "https://mlpmkjtqxj.execute-api.us-west-2.amazonaws.com/dev/coupons"; //main AWS Gateway
+    String url2 =
+        "https://0xz9o83x9e.execute-api.us-east-2.amazonaws.com/dev/coupons"; //replica AWS Gateway
 
     //Assume at least 1 of the urls will be alive always
     var isUrl1Alive = await isUrlAlive(url1);
 
-    return isUrl1Alive ? url1 : url2; 
+    return isUrl1Alive ? url1 : url2;
   }
-  
+
   @override
   T? deserialize<T>(dynamic data) {
     if (T == Coupon) {
@@ -32,7 +34,6 @@ class CouponAPI extends HttpService {
       c.quantity = (map["quantity"]);
 
       return c as T;
-
     } else if (T == List<Coupon>) {
       // each element in the list is a Map<dyanmic, dynamic>
       return (data as List).map((map) {
@@ -67,36 +68,35 @@ class CouponAPI extends HttpService {
     return get<List<Coupon>>("/", {"country": country});
   }
 
-  Future<Result<List<Coupon>, APIError>> getCouponsCountryCity(String country, String city) {
+  Future<Result<List<Coupon>, APIError>> getCouponsCountryCity(
+      String country, String city) {
     return get<List<Coupon>>("/", {"country": country, "city": city});
   }
 
   Future<Result<bool, APIError>> postCoupon(Coupon coupon) {
-    return postJson<bool>(
-      "/",
-      {
-        "vendorID": coupon.vendorID.toString(),
-        "expiryDate": coupon.expiryDate.toString(),
-        "title": coupon.title,
-        "description": coupon.description,
-        "isMultiuse": coupon.isMultiuse.toString(),
-        "quantity" : coupon.quantity.toString()
-      }
-      );
+    return postJson<bool>("/", {
+      "vendorID": coupon.vendorID.toString(),
+      "expiryDate": coupon.expiryDate.toString(),
+      "title": coupon.title,
+      "description": coupon.description,
+      "isMultiuse": coupon.isMultiuse.toString(),
+      "quantity": coupon.quantity.toString()
+    });
   }
 
   Future<Result<bool, APIError>> verifyCoupon(Coupon coupon) async {
     Result<Coupon, APIError> result = await getCoupon(coupon.id);
     return result.map((success) => true);
   }
-  
 
   // Future<Result<bool, APIError>> deleteCoupon(Coupon coupon) {
-    
   // }
 
-  // bool redeemCoupon(Coupon coupon) {
+  Future<Result<bool, APIError>> redeemCoupon(int id) {
+    return get<bool>("/acquire/", {"id": id});
+  }
 
-  // }
-
+  Future<Result<bool, APIError>> releaseCoupon(int id) {
+    return get<bool>("/release/", {"id": id});
+  }
 }
