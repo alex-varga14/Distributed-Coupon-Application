@@ -92,7 +92,7 @@ class VendorAPI extends HttpService {
       {
         "country": vendor.country,
         "city": vendor.city,
-        "vendorName": vendor.vendorName
+        "name": vendor.vendorName
       }
       );
   }
