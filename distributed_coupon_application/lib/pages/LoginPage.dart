@@ -14,6 +14,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   LoginPageVM vm = new LoginPageVM();
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,8 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 8.0),
                     child: TextField(
-                        onChanged: (value) =>
-                            globals.vendorID = int.parse(value),
+                        controller: controller,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Vendor ID',
@@ -85,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
                   onPressed: () async {
+                    updateId();
                     bool result =
                         await vm.checkForValidVendorId(globals.vendorID);
                     if (result) {
@@ -143,5 +145,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void updateId() {
+    if (int.tryParse(controller.text) != null) {
+      globals.vendorID = int.parse(controller.text);
+    }
   }
 }
