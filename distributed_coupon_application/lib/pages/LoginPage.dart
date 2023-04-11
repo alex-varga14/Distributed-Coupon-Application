@@ -39,68 +39,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              SizedBox(height: 30),
-
-              //Email input
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35),
-                child: Container(
-                  constraints: BoxConstraints(minWidth: 150, maxWidth: 250),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 4,
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
-                      )
-                    ],
-                    // borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: TextField(
-                        decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Email',
-                    )),
-                  ),
-                ),
-              ),
-
               SizedBox(height: 10),
 
-              //Password input
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35),
-                child: Container(
-                  constraints: BoxConstraints(minWidth: 150, maxWidth: 250),
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 247, 244, 244),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 4,
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
-                      )
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Password',
-                        )),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 25),
 
               //Sign in
               Container(
@@ -118,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => const VendorCouponPage()));
                   },
                   child: Text(
-                    'SIGN IN',
+                    'ENTER PORTAL',
                     style: GoogleFonts.roboto(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
