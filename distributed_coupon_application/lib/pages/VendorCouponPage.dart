@@ -1,6 +1,7 @@
 import 'package:distributed_coupon_application/model/coupon.dart';
 import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:distributed_coupon_application/pages/CreateCouponPage.dart';
+import 'package:distributed_coupon_application/pages/WelcomePage.dart';
 import 'package:distributed_coupon_application/ui/widgets/CouponWidget.dart';
 import 'package:distributed_coupon_application/vm/couponfeedpage_vm.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,16 @@ class _VendorCouponPageState extends State<VendorCouponPage> {
                     MaterialPageRoute(
                         builder: (context) => const CreateCouponPage()));
               }),
+          IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const WelcomePage()));
+              })
         ],
+        automaticallyImplyLeading: false,
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
