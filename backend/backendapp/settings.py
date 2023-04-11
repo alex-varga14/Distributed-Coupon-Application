@@ -101,18 +101,58 @@ DATABASES = {
         'NAME': 'cpsc559',
         'USER':'root',
         'PASSWORD':'coupons1001',
-        'HOST':'3.144.123.146', # to run locally
+        'HOST':'3.129.250.41', # to run locally
         'PORT': '5000',
     }
 }
+## OLD CONSISTENCY MECHANISM LOGGERS
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+# if DEBUG:
+#     import logging
+#     l = logging.getLogger('django.db.backends')
+#     l.setLevel(logging.DEBUG)
+#     l.addHandler(logging.StreamHandler())
+
+# LOGGING = {
+#     'version': 1,
+#     'formatters': {
+#         'timestamp': {
+#             'format': '{asctime} {message}',
+#             'style': '{',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'timestamp',
+#         },
+#         'file': {
+#             'class': 'logging.FileHandler',
+#             'formatter': 'timestamp',
+#             'filename': '/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#         },
 #     }
 # }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://3.129.250.41:6379/0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'myapp_cache',
+        'TIMEOUT': 3600,
+    }
+}
+
+CACHE_LOCK_TIMEOUT = 30
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

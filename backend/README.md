@@ -1,6 +1,6 @@
 ## Developer information
 
-There are four REST API processes hosted on 3.145.15.144. Each process hosts a gRPC server and is connected to
+There are four REST API processes hosted on 3.129.250.41. Each process hosts a gRPC server and is connected to
 a corresponding MySQL server as follows:
 
 Name: REST API server port, MySQL port, gRPC server port
@@ -18,7 +18,74 @@ Due to the limited RAM size, 1GB of swap memory has been allocated. In the situa
 RAM is accidentally maxed out (noticable by having a frozen terminal and unresponsive HTTP requests), the server
 must be forcefully shutdown via the AWS console and started again.
 
-# Demo 3 Notes
+# Demo 4 Notes - Consistency and Synchronization
+Our choice of passive replication and adoption of a leader algorithm results in the system maintaining consistency in almost all cases. However, there are a handful of cases that require additional mechanisms to mantain consistency.
+
+## Cons/Sync - Event in which a replica dies
+In order to recover from such a case, the mechanism below was implemented. All requests/operations forwarded from the AWS Lambda functions to any django instance on the EC2 will be logged into a file. Each operations has an associated global timestamp. The logger configuration is currently set as:
+```
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'timestamp': {
+            'format': '{asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'timestamp',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'timestamp',
+            'filename': '/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+    }
+}
+```
+Each django instance stores its last executed operation on AWS Systems Manager Parameter Store For backup replicas, this value is updated each time a request is successfully propogated from leader to backups. For the leader, each time it successfully transmits a request. It is also updated when a replica reboots. This occurs when a dead replica reboots, in which it follows the procedure below:
+1. Iterate through log file, determine if last executed operations is up to date or behind. If up to date skip the rest.
+2. If behind, begin executing operations from the last executed timestamp till the most up-to-date.
+3. Update corresponding instance's last executed operation in the Parameter store.
+
+Within each lambda function, before the request is sent to the leader replica, there is a heartbeat check that occurs by pinging the following endpoint `GET /`. If the server responds with HTTP 200 it is alive and will receive the request, any other response and it needs a reboot.
+
+## Issues with this approach
+
+There are few issues with this approach:
+1. All four instances operations are logged resulting in large overhead and therefore increased latency with time as well as inability to scale. Furthermore, in its current state, an issue that arises from this is that duplicate sql operations are ignored and not inserted into the table; however, these queries still trigger the auto increment property which results in gaps in id ranges when a replica reboots therefore inconsistency between row id's amongst the instances. TOFIX
+2. In the case all replicas go down, there is no recovery mechanism. Also, none in the case a database goes down.
+
+...
+
+## Sync - Contention Over Coupon Access
+In order to manage concurrent access on coupons, we use a django Redis cache to manage distributed locking across the four replicas. The Redis cache can be checked to see if a corresponding key exists when a user proceeds with redemption, if the key exists, it means the current coupon is locked and the user cannot redeem it. The Redis cache server is hosted on the EC2 instance at port 6379. To view the locking in action, one can access the servers redis cache as follows:
+
+```
+redis-cli -h 3.129.250.41
+```
+Once in redis console, one can view keys, ie all locked coupons, by using the following command:
+
+```
+KEYS *
+```
+For our system, we use the `myapp_cache:1:coupon_lock_{}` keys, where the last segment is the coupon ID. To view the key, or locked coupon, run (ex: where couponID = 1):
+
+```
+GET myapp_cache:1:coupon_lock_1
+```
+
+...
+
+# Demo 3 Notes - Fault Tolerance
 
 ## Model
 The data model returned from the election process is as follows:
@@ -79,7 +146,7 @@ There are few non-critical issues (specific to CPSC 559) with this approach:
         created are complete.
     * Possible solution: by applying the solution in issue 2, the number of active connections reduces to O(1).
 
-# Demo 2 Notes
+# Demo 2 Notes - Replication
 
 ## Setting up the application
 Some Python dependencies must be installed first prior to running the application.
@@ -109,7 +176,7 @@ Connections to the DB can be made with the `mysql` command. This client is not b
 computer by default, so it must be installed. An example usage of the command
 to connect from a personal computer to the server is the following:
 ```
-mysql -h 3.145.15.144 -u root -P 5000 -pcoupons1001
+mysql -h 3.129.250.41 -u root -P 5000 -pcoupons1001
 ```
 There are multiple DB instances. The top of the README file contains port numbers for each instance.
 
@@ -128,7 +195,7 @@ python manage.py migrate --settings=settings.instance-x
 
 In addition, verify that the table has AUTO_INCREMENT for vendor.id and coupons.id. To apply it, first log in into
 the MySQL server with the command
-`mysql -h 3.145.15.144 -u root -P 5000 -pcoupons1001`.
+`mysql -h 3.129.250.41 -u root -P 5000 -pcoupons1001`.
 
 Then, use the database by invoking the command
 `use cpsc559;`.
