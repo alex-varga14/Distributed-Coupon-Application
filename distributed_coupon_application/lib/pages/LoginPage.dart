@@ -28,22 +28,20 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: SingleChildScrollView(
             child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               //Open text
+              Text(
+                'Welcome back!',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                ),
+              ),
               const Icon(
                 Icons.card_giftcard_rounded,
                 color: Color.fromARGB(255, 102, 194, 212),
                 size: 120,
               ),
-              SizedBox(height: 10),
-              Text(
-                'Welcome back.',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                ),
-              ),
-
               SizedBox(height: 10),
               //Email input
               Padding(
@@ -86,14 +84,16 @@ class _LoginPageState extends State<LoginPage> {
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
                   onPressed: () async {
-                    updateId();
-                    bool result =
-                        await vm.checkForValidVendorId(globals.vendorID);
-                    if (result) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const VendorCouponPage()));
+                    if (updateId()) {
+                      bool result =
+                          await vm.checkForValidVendorId(globals.vendorID);
+                      if (result) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const VendorCouponPage()));
+                      }
                     }
                   },
                   child: Text(
@@ -147,9 +147,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void updateId() {
+  bool updateId() {
     if (int.tryParse(controller.text) != null) {
       globals.vendorID = int.parse(controller.text);
+      return true;
     }
+    return false;
   }
 }

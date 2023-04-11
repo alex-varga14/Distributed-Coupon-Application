@@ -67,11 +67,11 @@ class _CouponWidgetState extends State<CouponWidget> {
               ],
             ),
             const SizedBox(width: 20),
-            const Image(
-              width: 170,
+            Expanded(
+                child: const Image(
               image: NetworkImage(
                   'https://media.istockphoto.com/id/1254508881/photo/woman-holding-sale-shopping-bags-consumerism-shopping-lifestyle-concept.jpg?s=612x612&w=0&k=20&c=wuS3z6nPQkMM3_wIoO67qQXP-hfXkxlBc2sedwh-hxc='),
-            )
+            )),
           ],
         ),
       ),

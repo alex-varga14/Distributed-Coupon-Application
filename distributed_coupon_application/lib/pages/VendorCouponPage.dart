@@ -25,6 +25,7 @@ class _VendorCouponPageState extends State<VendorCouponPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 234, 229, 229),
       appBar: AppBar(
         title: const Text('Welcome, vendor!'),
         actions: <Widget>[
