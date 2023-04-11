@@ -9,7 +9,6 @@ REPLICAS = [
     "http://3.129.250.41:8003",
 ]
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
