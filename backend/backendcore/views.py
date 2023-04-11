@@ -98,7 +98,7 @@ class CouponsAPIView(APIView):
         title = request.query_params.get("title")
         description = request.query_params.get("description")
         quantity = int(request.query_params.get("quantity"))
-        isMultiuse = bool(request.query_params.get("isMultiuse"))
+        isMultiuse = bool(request.query_params.get("isMultiuse")) #request.query_params.get("isMultiuse").lower() in ["true","1"]
 
 
         coupon = dal.createCoupon(None, vendorId, expiryDate, title, description, quantity, isMultiuse, True)
@@ -197,20 +197,10 @@ class ProcLeaderReqAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 class AliveAPIView(APIView):
     #GET / to test if replica is alive
     def get(self, request, *args, **kwargs):
         return Response(' ', status=status.HTTP_200_OK)
-
-class CouponAcquireAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response('Acquired lock', status=status.HTTP_200_OK)
-
-class CouponReleaseAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        return Response('Released lock', status=status.HTTP_200_OK)
-
 
 class CouponAcquireAPIView(APIView):
     def get(self, request, *args, **kwargs):
@@ -219,16 +209,16 @@ class CouponAcquireAPIView(APIView):
         lock_acquired = cache.add('coupon_lock_{}'.format(id), 'locked', 120)
         if not lock_acquired:
             # lock already held by another user, return redirect
-            return Response("Coupon locked by another user!", status=status.HTTP_409_CONFLICT)
+            return Response("Coupon is actively being redeemed(locked) by another user!", status=status.HTTP_409_CONFLICT)
         try:
-            # coupon locked now, redemption logic - TO DO: ADD DELETION IF NEEDED FOR FE
-            coupon = models.Coupon.objects.get(id)
-            coupon.is_redeemed = True
-            coupon.save()
-            return Response("Coupon redeemed successfully", status=status.HTTP_200_OK)
+            # coupon locked now, redemption logic - payment + deletion
+            # coupon = models.Coupon.objects.get(id)
+            # coupon.is_redeemed = True
+            # coupon.save()
+            return Response("Coupon redemption process begun (lock acquired)", status=status.HTTP_200_OK)
         #finally:
         except:
-            return Response("Coupon lock acquired!", status=status.HTTP_200_OK)
+            return Response("ERROR: Unable to Redeem(lock) Coupon!", status=status.HTTP_200_OK)
 
 class CouponReleaseAPIView(APIView):
     def get(self, request, *args, **kwargs):

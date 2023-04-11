@@ -1,4 +1,3 @@
-
 from backendcore import models
 from backendcore import repository
 from backendcore.sync import syncclient
@@ -40,4 +39,3 @@ def createVendor(vendorID, country, city, name, leader=False):
 
 def getVendors(vendorID, country, city, name):
     return models.Vendor.objects.all().values()
-

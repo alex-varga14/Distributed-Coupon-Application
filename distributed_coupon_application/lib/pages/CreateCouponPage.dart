@@ -1,9 +1,13 @@
-import 'package:distributed_coupon_application/pages/VendorRegisterPage.dart';
 import 'package:distributed_coupon_application/vm/createcouponpage_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_indicator/loading_indicator.dart';
+import 'package:distributed_coupon_application/pages/VendorCouponPage.dart';
+
 import 'package:result_type/result_type.dart';
+import 'package:distributed_coupon_application/globals.dart' as globals;
 
 import '../model/coupon.dart';
 import '../model/vendor.dart';
@@ -27,7 +31,7 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 93, 175, 191),
+        title: const Text("Create a coupon"),
       ),
       body: SafeArea(
         child: Padding(
@@ -35,43 +39,11 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Center(
-                child: Text(
-                  'Create a coupon',
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
               const Center(
                 child: Icon(
                   Icons.card_giftcard_rounded,
                   color: Color.fromARGB(255, 102, 194, 212),
-                  size: 50,
-                ),
-              ),
-              const SizedBox(height: spacing),
-              Text(
-                'Vendor Information',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(height: spacing),
-              SizedBox(
-                height: 40,
-                child: TextFormField(
-                  onChanged: (value) {
-                    vendor.id = int.parse(value);
-                    coupon.vendorID = int.parse(value);
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(),
-                    hintText: 'Vendor ID',
-                  ),
+                  size: 100,
                 ),
               ),
               const SizedBox(height: spacing),
@@ -109,13 +81,17 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
               const SizedBox(height: spacing),
               SizedBox(
                 height: 40,
-                child: TextFormField(
-                  onChanged: (value) => coupon.description = value,
+                child: TextField(
+                  onChanged: (value) => coupon.quantity = int.parse(value),
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(8),
                     border: OutlineInputBorder(),
                     hintText: 'Coupon Quantity',
                   ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                 ),
               ),
               Row(
@@ -130,24 +106,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text('Is Multiuse?',
-                      style: GoogleFonts.roboto(
-                        fontSize: 16,
-                      )),
-                  Checkbox(
-                    checkColor: Colors.white,
-                    value: coupon.isMultiuse,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        coupon.isMultiuse = value!;
-                      });
-                    },
-                  ),
-                ],
-              ),
               Center(
                 child: TextButton(
                   style: TextButton.styleFrom(
@@ -156,8 +114,17 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
                     shadowColor: Colors.grey.withOpacity(0.5),
                   ),
                   onPressed: () async {
-                    //TODO post coupon to database and display some confirmation window
+                    coupon.vendorID = globals.vendorID;
+                    //loading dialog
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const LoadingIndicator(
+                                indicatorType: Indicator.ballSpinFadeLoader));
+
                     Result<bool, String> result = await vm.createCoupon(coupon);
+
+                    Navigator.pop(context); //pops loading dialog
 
                     if (result.isSuccess && result.success) {
                       showDialog(
@@ -208,7 +175,6 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(vendor.toString()),
           Text(coupon.toString()),
         ],
       ),
@@ -249,25 +215,17 @@ class _CreateCouponPageState extends State<CreateCouponPage> {
         showTitleActions: true,
         minTime: DateTime.now(),
         maxTime: DateTime.now().add(const Duration(days: 365)),
-        onConfirm: (date) {
-      DatePicker.showTimePicker(context, showTitleActions: true,
-          onConfirm: (date) {
-        setState(() {
-          coupon.expiryDate = DateTime(
-              coupon.expiryDate.year,
-              coupon.expiryDate.month,
-              coupon.expiryDate.day,
-              date.hour,
-              date.minute);
-        });
-      }, currentTime: DateTime.now(), locale: LocaleType.en);
+        currentTime: DateTime.now(),
+        locale: LocaleType.en, onConfirm: (date) {
       setState(() {
-        coupon.expiryDate = date;
+        coupon.expiryDate =
+            DateTime(date.year, date.month, date.day, date.hour, date.minute);
       });
-    }, currentTime: DateTime.now(), locale: LocaleType.en);
+    });
   }
 
   void _openCouponFeedPage() {
-    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const VendorCouponPage()));
   }
 }

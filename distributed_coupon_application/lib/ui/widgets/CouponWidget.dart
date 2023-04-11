@@ -3,7 +3,7 @@ import 'package:distributed_coupon_application/model/vendor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'CouponDetailWidget.dart';
+import '../../pages/CouponDetailPage.dart';
 
 class CouponWidget extends StatefulWidget {
   final Coupon coupon;
@@ -24,14 +24,14 @@ class _CouponWidgetState extends State<CouponWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CouponDetailWidget(
+            builder: (context) => CouponDetailPage(
                 coupon: widget.coupon, couponVendor: widget.couponVendor),
           ),
         ),
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 241, 237, 237),
+          color: const Color.fromARGB(255, 241, 237, 237),
           //border:
           //Border.all(color: Color.fromARGB(120, 93, 175, 191), width: 2),
           borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -40,7 +40,7 @@ class _CouponWidgetState extends State<CouponWidget> {
               color: Colors.grey.withOpacity(0.7),
               spreadRadius: 5,
               blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
+              offset: const Offset(0, 3), // changes position of shadow
             ),
           ],
         ),
@@ -67,11 +67,11 @@ class _CouponWidgetState extends State<CouponWidget> {
               ],
             ),
             const SizedBox(width: 20),
-            const Image(
-              width: 170,
+            Expanded(
+                child: const Image(
               image: NetworkImage(
                   'https://media.istockphoto.com/id/1254508881/photo/woman-holding-sale-shopping-bags-consumerism-shopping-lifestyle-concept.jpg?s=612x612&w=0&k=20&c=wuS3z6nPQkMM3_wIoO67qQXP-hfXkxlBc2sedwh-hxc='),
-            )
+            )),
           ],
         ),
       ),

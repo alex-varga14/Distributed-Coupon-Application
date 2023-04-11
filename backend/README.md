@@ -1,6 +1,6 @@
 ## Developer information
 
-There are four REST API processes hosted on 3.145.15.144. Each process hosts a gRPC server and is connected to
+There are four REST API processes hosted on 3.129.250.41. Each process hosts a gRPC server and is connected to
 a corresponding MySQL server as follows:
 
 Name: REST API server port, MySQL port, gRPC server port
@@ -176,7 +176,7 @@ Connections to the DB can be made with the `mysql` command. This client is not b
 computer by default, so it must be installed. An example usage of the command
 to connect from a personal computer to the server is the following:
 ```
-mysql -h 3.145.15.144 -u root -P 5000 -pcoupons1001
+mysql -h 3.129.250.41 -u root -P 5000 -pcoupons1001
 ```
 There are multiple DB instances. The top of the README file contains port numbers for each instance.
 
@@ -195,7 +195,7 @@ python manage.py migrate --settings=settings.instance-x
 
 In addition, verify that the table has AUTO_INCREMENT for vendor.id and coupons.id. To apply it, first log in into
 the MySQL server with the command
-`mysql -h 3.145.15.144 -u root -P 5000 -pcoupons1001`.
+`mysql -h 3.129.250.41 -u root -P 5000 -pcoupons1001`.
 
 Then, use the database by invoking the command
 `use cpsc559;`.

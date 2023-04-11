@@ -23,7 +23,6 @@ urlpatterns = [
     # https://www.django-rest-framework.org/api-guide/filtering/
     path('placeholder1/<str:query>/', views.Placeholder1APIView.as_view()),
 
-
     path('coupons/', views.CouponsAPIView.as_view()),
     path('vendors/', views.VendorsAPIView.as_view()),
 
@@ -31,9 +30,9 @@ urlpatterns = [
     path('proc/leader/<str:pid>/', views.ProcLeaderReqAPIView.as_view()),
 
     path('admin/', admin.site.urls),
-    path('', views.AliveAPIView.as_view()),
 
     #sync
+    path('', views.AliveAPIView.as_view()),
     path('coupons/acquire/<int:id>/', views.CouponAcquireAPIView.as_view()),
     path('coupons/release/<int:id>/', views.CouponReleaseAPIView.as_view()),
 ]

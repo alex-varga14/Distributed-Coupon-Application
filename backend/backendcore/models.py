@@ -44,8 +44,4 @@ class ProcLeader():
 class ProcInternalReq():
     def __init__(self, leader_result):
         self.leader_result = leader_result
-
-
-
-
-
+        

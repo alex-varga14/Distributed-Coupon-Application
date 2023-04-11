@@ -29,6 +29,8 @@ ALLOWED_HOSTS = ['*']
 
 GRPC_PORT=50000
 
+HOST = "localhost"
+
 REPLICAS = [
     "http://localhost:8000",
     "http://localhost:8001",
@@ -99,44 +101,44 @@ DATABASES = {
         'NAME': 'cpsc559',
         'USER':'root',
         'PASSWORD':'coupons1001',
-        'HOST':'3.144.123.146', # to run locally
+        'HOST':'3.129.250.41', # to run locally
         'PORT': '5000',
     }
 }
+## OLD CONSISTENCY MECHANISM LOGGERS
 
-if DEBUG:
-    import logging
-    l = logging.getLogger('django.db.backends')
-    l.setLevel(logging.DEBUG)
-    l.addHandler(logging.StreamHandler())
+# if DEBUG:
+#     import logging
+#     l = logging.getLogger('django.db.backends')
+#     l.setLevel(logging.DEBUG)
+#     l.addHandler(logging.StreamHandler())
 
-
-LOGGING = {
-    'version': 1,
-    'formatters': {
-        'timestamp': {
-            'format': '{asctime} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'timestamp',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'formatter': 'timestamp',
-            'filename': '/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-        },
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'formatters': {
+#         'timestamp': {
+#             'format': '{asctime} {message}',
+#             'style': '{',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'timestamp',
+#         },
+#         'file': {
+#             'class': 'logging.FileHandler',
+#             'formatter': 'timestamp',
+#             'filename': '/home/ubuntu/Distributed-Coupon-Application/backend/backendapp/django-query.log',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }
 
 CACHES = {
     'default': {
@@ -151,14 +153,6 @@ CACHES = {
 }
 
 CACHE_LOCK_TIMEOUT = 30
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
